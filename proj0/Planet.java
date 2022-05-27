@@ -16,7 +16,7 @@ public class Planet {
     /* the name of the file that corresponds to the image that depicts the planet */
     public String imgFileName;
     /* unit is Nm^2/kg^2 for G **/
-    static final double Gravi = 6.67e-11;
+    private static final double Gravi = 6.67e-11;
     public Planet(double xP, double yP, double xV,
                   double yV, double m, String img){
         xxPos = xP;

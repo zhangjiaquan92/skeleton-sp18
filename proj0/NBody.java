@@ -60,7 +60,7 @@ public class NBody {
 
         StdDraw.enableDoubleBuffering();
         double time = 0;
-        while(time <= T){
+        while(time < T){
             double[] xForce = new double[Planets.length];
             double[] yForce = new double[Planets.length];
             for(int k=0; k < Planets.length;k++){
@@ -89,7 +89,6 @@ public class NBody {
                     Planets[i].yyVel, Planets[i].mass, Planets[i].imgFileName);
 
         }
-
 
 
     }
