@@ -73,12 +73,12 @@ public class LinkedListDeque<T> {
         if (size == 0) {
             return null;
         } else {
-        T temp = sentinel.next.item;
-        sentinel.next.next.prev = sentinel;
-        sentinel.next = sentinel.next.next;
-        size--;
+            T temp = sentinel.next.item;
+            sentinel.next.next.prev = sentinel;
+            sentinel.next = sentinel.next.next;
+            size--;
 
-        return temp;
+            return temp;
         }
 
     }
@@ -86,11 +86,11 @@ public class LinkedListDeque<T> {
         if (size == 0){
             return null;
         } else {
-        T temp = sentinel.prev.item;
-        sentinel.prev.prev.next = sentinel;
-        sentinel.prev = sentinel.prev.prev;
-        size--;
-        return temp;
+            T temp = sentinel.prev.item;
+            sentinel.prev.prev.next = sentinel;
+            sentinel.prev = sentinel.prev.prev;
+            size--;
+            return temp;
         }
 
     }
@@ -112,15 +112,15 @@ public class LinkedListDeque<T> {
         if (index > size - 1 || index < 0){
             return null;
         }
-        return GetHelper(index, sentinel.next);
+        return gethelper(index, sentinel.next);
     }
-    private T GetHelper(int index, Addnode a){
+    private T gethelper(int index, Addnode a){
         T temp;
         if (index == 0){
             temp = a.item;
             return temp;
         } else {
-            temp = GetHelper(index - 1, a.next);
+            temp = gethelper(index - 1, a.next);
         }
         return temp;
     }

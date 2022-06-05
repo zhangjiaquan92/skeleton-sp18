@@ -27,13 +27,17 @@ public class ArrayDeque<T> {
     }*/
     /** Gets the ith item in the list (0 is the front). */
     public T get(int i) {
-        if (prev > next){
-            if (i + prev + 1 > item.length){
-                return item[prev + i + 1 - item.length];
+        if (i < 0 || i >= size){
+            return null;
+        } else {
+            if (prev > next){
+                if (i + prev + 1 > item.length){
+                    return item[prev + i + 1 - item.length];
+                }
+                return item[prev + i + 1];
             }
-            return item[prev + i + 1];
+            return item[prev + 1 + i];
         }
-        return item[prev + 1 + i];
     }
 
     /** Deletes item from back of the list and
@@ -63,6 +67,7 @@ public class ArrayDeque<T> {
     }
 
     public void addFirst(T t){
+        resizechk();
         item[prev] = t;
         if (prev == 0){
             prev = item.length - 1;
@@ -70,10 +75,11 @@ public class ArrayDeque<T> {
             prev--;
         }
         size++;
-        resizechk();
+
     }
 
     public void addLast(T t){
+        resizechk();
         item[next] = t;
         if (next == item.length - 1){
             next = 0;
@@ -81,14 +87,22 @@ public class ArrayDeque<T> {
             next++;
         }
         size++;
-        resizechk();
+
     }
 
-    public boolean isEmpty(){
-        if (next - prev == 1 || (prev == item.length - 1 && next == 0)){
+    public boolean isEmpty() {
+        /*if (next - prev == 1 || (prev == item.length - 1 && next == 0)){
             return true;
         }
         return false;
+
+    }*/
+        if (size == 0) {
+            return true;
+        } else {
+            return false;
+        }
+
 
     }
     public void printDeque(){
@@ -144,9 +158,9 @@ public class ArrayDeque<T> {
                 next--;
                 t = item[next];
             }
-        size--;
-        resizechk();
-        return t;
+            size--;
+            resizechk();
+            return t;
         }
     }
 
@@ -154,8 +168,7 @@ public class ArrayDeque<T> {
         /* true means list size up, false means list size down.*/
         if (size > 0.75 * item.length && item.length >= 16){
             this.resize(true);
-        }
-        else if (size < 0.25 * item.length && item.length >= 32){
+        } else if (size < 0.25 * item.length && item.length >= 32){
             this.resize(false);
         }
         if (next + 1 == prev){
@@ -173,7 +186,8 @@ public class ArrayDeque<T> {
                 System.arraycopy(item, prev + 1, te, prev + 1, size);
             } else {
                 System.arraycopy(item, 0, te, 0,next);
-                System.arraycopy(item, prev + 1, te, te.length - (item.length - prev - 1), item.length - prev - 1);
+                System.arraycopy(item, prev + 1, te, te.length - (item.length - prev - 1),
+                        item.length - prev - 1);
                 prev = te.length - (item.length - prev);
                 item = te;
             }
