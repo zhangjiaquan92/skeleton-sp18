@@ -1,6 +1,6 @@
 public class ArrayDeque<T> {
 
-     private T[] item;
+    private T[] item;
     private int size;
     private int next;
     private int prev;
@@ -8,7 +8,7 @@ public class ArrayDeque<T> {
     /** Creates an empty list. */
     public ArrayDeque() {
 
-         item = (T[]) new Object[8];
+        item = (T[]) new Object[8];
         size = 0;
         next = 0;
         prev = 7;
@@ -29,14 +29,14 @@ public class ArrayDeque<T> {
     /** Gets the ith item in the list (0 is the front). */
     public T get(int i) {
 
-        if (i < 0 || i >= size){
+        if (i < 0 || i >= size) {
 
              return null;
         } else {
 
-             if (prev > next){
+             if (prev > next) {
 
-                 if (i + prev + 1 >= item.length){
+                 if (i + prev + 1 >= item.length) {
 
                       return item[prev + i + 1 - item.length];
                 }
@@ -73,7 +73,7 @@ public class ArrayDeque<T> {
          return size;
     }
 
-    public void addFirst(T t){
+    public void addFirst(T t) {
 
 
         item[prev] = t;
@@ -87,12 +87,12 @@ public class ArrayDeque<T> {
         resizechk();
     }
 
-    public void addLast(T t){
+    public void addLast(T t) {
 
 
         item[next] = t;
         size++;
-        if (next == item.length - 1){
+        if (next == item.length - 1) {
 
             next = 0;
         } else {
@@ -120,19 +120,19 @@ public class ArrayDeque<T> {
 
 
 
-    public void printDeque(){
+    public void printDeque() {
 
         int t = prev + 1;
         int b = 0;
         if (prev > next){
 
-            while (t < item.length){
+            while (t < item.length) {
 
                 System.out.print(item[t]);
                 System.out.print(" ");
                 t++;
             }
-            while (b < next){
+            while (b < next) {
 
                 System.out.print(item[b]);
                 System.out.print(" ");
@@ -140,7 +140,7 @@ public class ArrayDeque<T> {
             }
         } else {
 
-            for (b = 0; b < size; b++){
+            for (b = 0; b < size; b++) {
 
                 System.out.print(item[b + prev + 1]);
                 System.out.print(" ");
@@ -148,15 +148,15 @@ public class ArrayDeque<T> {
         }
         System.out.println("");
     }
-    public T removeFirst(){
+    public T removeFirst() {
 
         T t;
-        if (size == 0){
+        if (size == 0) {
 
             return null;
         } else {
 
-            if (prev == item.length - 1){
+            if (prev == item.length - 1) {
 
                 prev = 0;
                 t = item[0];
@@ -171,10 +171,10 @@ public class ArrayDeque<T> {
         }
     }
 
-    public T removeLast(){
+    public T removeLast() {
 
         T t;
-        if (size == 0){
+        if (size == 0) {
 
             return null;
         } else {
@@ -194,31 +194,31 @@ public class ArrayDeque<T> {
         }
     }
 
-    private void resizechk(){
+    private void resizechk() {
 
         /* true means list size up, false means list size down.*/
-        if (size > 0.75 * item.length && item.length >= 16){
+        if (size > 0.75 * item.length && item.length >= 16) {
 
             this.resize(true);
-        } else if (size < 0.25 * item.length && item.length >= 32){
+        } else if (size < 0.25 * item.length && item.length >= 32) {
 
             this.resize(false);
         }
-        if (next + 1 == prev || (prev == 0 && next == item.length - 1)){
+        if (next + 1 == prev || (prev == 0 && next == item.length - 1)) {
 
             this.resize(true);
         }
 
     }
 
-    private void resize(boolean check){
+    private void resize(boolean check) {
 
         /*check == true, the array needs resize up*/
 
         if (check){
 
             T[] te = (T[])new Object[item.length * 2];
-            if (prev < next){
+            if (prev < next) {
 
                 System.arraycopy(item, prev + 1, te, prev + 1, size);
                 item = te;
