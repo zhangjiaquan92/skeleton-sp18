@@ -11,34 +11,46 @@ public class LinkedListDeque<Dung> {
 
         }
     }
-    private Addnode sentinel;
+    public Addnode sentinel;
     public int size;
 
     public LinkedListDeque(){
         sentinel = new Addnode(null,null, null);
-        sentinel.next = sentinel.prev;
+        sentinel.next = sentinel;
+        sentinel.prev = sentinel;
         size = 0;
 
     }
     public LinkedListDeque(Dung x) {
         sentinel = new Addnode(null, null, null);
         sentinel.next = new Addnode(x,sentinel,sentinel);
+        sentinel.prev = sentinel.next;
         size = 1;
     }
 
 
 
     public void addFirst(Dung item){
-        sentinel.next = new Addnode(item,sentinel,sentinel.next);
+
+        Addnode temp = new Addnode(item,sentinel,sentinel.next);
+        sentinel.next = temp;
+        sentinel.next.next.prev = temp;
         size++;
+
 
     }
     public void addLast(Dung item){
-        sentinel.prev = new Addnode(item,sentinel.prev,sentinel);
+        Addnode temp = new Addnode(item,sentinel.prev,sentinel);
+
+        sentinel.prev.next = temp;
+        sentinel.prev = temp;
+
+
+
         size++;
     }
     public boolean isEmpty(){
-        if (sentinel.next == sentinel){
+        if (size == 0){
             return true;
         }
         return false;
@@ -55,12 +67,13 @@ public class LinkedListDeque<Dung> {
             System.out.print(" ");
             temp = temp.next;
         }
-
+        System.out.println("");
     }
     public Dung removeFirst(){
         Dung temp = sentinel.next.item;
         sentinel.next.next.prev = sentinel;
         sentinel.next = sentinel.next.next;
+        size--;
 
         return temp;
 
@@ -71,7 +84,7 @@ public class LinkedListDeque<Dung> {
         Dung temp = sentinel.prev.item;
         sentinel.prev.prev.next = sentinel;
         sentinel.prev = sentinel.prev.prev;
-
+        size--;
         return temp;
 
     }
