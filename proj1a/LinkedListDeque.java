@@ -89,7 +89,7 @@ public class LinkedListDeque<Dung> {
 
     }
     public Dung get(int index){
-        if(index > size -1){
+        if(index > size -1 || index<0){
             return null;
         }
         Addnode temp = sentinel.next;
@@ -103,18 +103,20 @@ public class LinkedListDeque<Dung> {
 
     }
     public Dung getRecursive(int index){
-        if(index > size -1){
+        if(index > size -1 || index<0){
             return null;
         }
         return GetHelper(index,sentinel.next);
     }
     private Dung GetHelper(int index, Addnode a){
+        Dung temp;
         if(index==0){
-            return a.item;
+            temp = a.item;
+            return temp;
         }else{
-            GetHelper(index-1,a.next);
+            temp = GetHelper(index-1,a.next);
         }
-        return null;
+        return temp;
     }
 
 
