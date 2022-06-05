@@ -1,13 +1,13 @@
-public class ArrayDeque <Dung>{
+public class ArrayDeque <T>{
 
-    private Dung[] item;
-    public int size;
-    public int next;
-    public int prev;
+    private T[] item;
+    private int size;
+    private int next;
+    private int prev;
 
     /** Creates an empty list. */
     public ArrayDeque() {
-        item = (Dung[])new Object[8];
+        item = (T[]) new Object[8];
         size = 0;
         next = 0;
         prev = 7;
@@ -26,12 +26,14 @@ public class ArrayDeque <Dung>{
         return item[prev-1];
     }*/
     /** Gets the ith item in the list (0 is the front). */
-    public Dung get(int i) {
-        if(prev > next){
-            if(i+prev+1 > item.length){
-                return item[prev+i+1-item.length];
-            }return item[prev+i+1];
-        }return item[prev+1+i];
+    public T get(int i) {
+        if (prev>next){
+            if (i + prev + 1>item.length){
+                return item[prev + i + 1 - item.length];
+            }
+            return item[prev + i + 1];
+        }
+        return item[prev + 1 + i];
     }
 
     /** Deletes item from back of the list and
@@ -60,22 +62,24 @@ public class ArrayDeque <Dung>{
         return size;
     }
 
-    public void addFirst(Dung t){
+    public void addFirst(T t){
         item[prev] = t;
-        if(prev == 0){
-            prev = item.length-1;
-        }else{
+        if (prev == 0){
+            prev = item.length - 1;
+        }
+        else {
             prev--;
         }
         size++;
         resizechk();
     }
 
-    public void addLast(Dung t){
+    public void addLast(T t){
         item[next] = t;
-        if(next == item.length-1){
+        if(next == item.length - 1){
             next = 0;
-        }else{
+        }
+        else{
             next++;
         }
         size++;
@@ -83,40 +87,42 @@ public class ArrayDeque <Dung>{
     }
 
     public boolean isEmpty(){
-        if(next-prev == 1 || (prev == item.length-1 && next==0)){
+        if (next - prev == 1 || (prev == item.length - 1 && next == 0)){
             return true;
-        }return false;
+        }
+        return false;
 
     }
     public void printDeque(){
-        int t = prev+1;
+        int t = prev + 1;
         int b = 0;
-        if(prev > next){
-            while(t< item.length){
+        if (prev > next){
+            while (t< item.length){
                 System.out.print(item[t]);
                 System.out.print(" ");
                 t++;
             }
-            while(b<next){
+            while (b<next){
                 System.out.print(item[b]);
                 System.out.print(" ");
                 b++;
             }
-        }else{
-            for (b = 0;b<size;b++){
-                System.out.print(item[b+prev+1]);
+        }
+        else{
+            for (b = 0;b < size;b++){
+                System.out.print(item[b + prev + 1]);
                 System.out.print(" ");
             }
         }
         System.out.println("");
     }
-    public Dung removeFirst(){
-        Dung t;
-        if(prev==item.length-1){
+    public T removeFirst(){
+        T t;
+        if (prev==item.length - 1){
             prev = 0;
             t = item[0];
-        }else{
-
+        }
+        else {
             prev++;
             t = item[prev];
         }
@@ -125,12 +131,13 @@ public class ArrayDeque <Dung>{
         return t;
     }
 
-    public Dung removeLast(){
-        Dung t;
-        if(next == 0){
-            next = item.length-1;
+    public T removeLast(){
+        T t;
+        if (next == 0){
+            next = item.length - 1;
             t = item[next];
-        }else{
+        }
+        else{
             next--;
             t = item[next];
         }
@@ -141,11 +148,13 @@ public class ArrayDeque <Dung>{
 
     public void resizechk(){
         /* true means list size up, false means list size down.*/
-        if(size>0.75*item.length && item.length>=16){
+        if (size > 0.75 * item.length && item.length >= 16){
             this.resize(true);
-        }else if(size<0.25*item.length && item.length >= 32){
+        }
+        else if (size < 0.25 * item.length && item.length >= 32){
             this.resize(false);
-        }if(next+1 == prev){
+        }
+        if (next + 1 == prev){
             this.resize(true);
         }
 
@@ -154,29 +163,32 @@ public class ArrayDeque <Dung>{
     public void resize(boolean check){
         /*check == true, the array needs resize up*/
 
-        if(check){
-            Dung[] te = (Dung[])new Object[item.length*2];
-            if(prev < next){
-                System.arraycopy(item,prev+1,te,prev+1,size);
-            }else{
+        if (check){
+            T[] te = (T[])new Object[item.length*2];
+            if (prev < next){
+                System.arraycopy(item,prev + 1,te,prev + 1,size);
+            }
+            else {
                 System.arraycopy(item,0,te,0,next);
-                System.arraycopy(item,prev+1,te,te.length-(item.length-prev-1),item.length-prev-1);
-                prev = te.length - (item.length-prev);
+                System.arraycopy(item,prev + 1,te,te.length - (item.length - prev - 1),item.length - prev - 1);
+                prev = te.length - (item.length - prev);
                 item = te;
             }
 
 
-        }else{
+        }
+        else {
             /*down side the array*/
-            Dung[] te = (Dung[])new Object[item.length/2];
-            if(prev < next) {
-                System.arraycopy(item, prev+1, te, 0, size);
-                prev = te.length-1;
+            T[] te = (T[])new Object[item.length/2];
+            if (prev < next) {
+                System.arraycopy(item, prev + 1, te, 0, size);
+                prev = te.length - 1;
                 next = size;
-            }else{
+            }
+            else {
                 System.arraycopy(item,0,te,0,next);
-                System.arraycopy(item,prev+1,te,te.length-(item.length-prev-1),item.length - prev - 1);
-                prev = te.length - (item.length-prev);
+                System.arraycopy(item,prev + 1,te,te.length - (item.length - prev - 1),item.length - prev - 1);
+                prev = te.length - (item.length - prev);
                 item = te;
             }
 
