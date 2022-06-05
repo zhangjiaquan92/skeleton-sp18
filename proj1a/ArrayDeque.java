@@ -204,7 +204,7 @@ public class ArrayDeque<T> {
 
             this.resize(false);
         }
-        if (next + 1 == prev){
+        if (next + 1 == prev || (prev == 0 && next == item.length - 1)){
 
             this.resize(true);
         }
@@ -221,6 +221,7 @@ public class ArrayDeque<T> {
             if (prev < next){
 
                 System.arraycopy(item, prev + 1, te, prev + 1, size);
+                item = te;
             } else {
 
                 System.arraycopy(item, 0, te, 0, next);
@@ -241,6 +242,7 @@ public class ArrayDeque<T> {
                 System.arraycopy(item, prev + 1, te, 0, size);
                 prev = te.length - 1;
                 next = size;
+                item = te;
             } else {
 
                 System.arraycopy(item, 0, te, 0, next);
