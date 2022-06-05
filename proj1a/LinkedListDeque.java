@@ -1,10 +1,10 @@
-public class LinkedListDeque<Dung> {
+public class LinkedListDeque<T> {
     private class Addnode{
 
-        public Dung item;
+        private T item;
         private Addnode next;
         private Addnode prev;
-        public Addnode(Dung i, Addnode p, Addnode n) {
+        public Addnode(T i, Addnode p, Addnode n) {
             item = i;
             next = n;
             prev = p;
@@ -15,22 +15,22 @@ public class LinkedListDeque<Dung> {
     private int size;
 
     public LinkedListDeque(){
-        sentinel = new Addnode(null,null, null);
+        sentinel = new Addnode(null, null,  null);
         sentinel.next = sentinel;
         sentinel.prev = sentinel;
         size = 0;
 
     }
-    public LinkedListDeque(Dung x) {
+    /*public LinkedListDeque(T x) {
         sentinel = new Addnode(null, null, null);
         sentinel.next = new Addnode(x, sentinel, sentinel);
         sentinel.prev = sentinel.next;
         size = 1;
     }
+*/
 
 
-
-    public void addFirst(Dung item){
+    public void addFirst(T item){
 
         Addnode temp = new Addnode(item, sentinel, sentinel.next);
         sentinel.next = temp;
@@ -39,7 +39,7 @@ public class LinkedListDeque<Dung> {
 
 
     }
-    public void addLast(Dung item){
+    public void addLast(T item){
         Addnode temp = new Addnode(item, sentinel.prev, sentinel);
 
         sentinel.prev.next = temp;
@@ -69,26 +69,32 @@ public class LinkedListDeque<Dung> {
         }
         System.out.println("");
     }
-    public Dung removeFirst(){
-        Dung temp = sentinel.next.item;
+    public T removeFirst(){
+        if (size == 0) {
+            return null;
+        } else {
+        T temp = sentinel.next.item;
         sentinel.next.next.prev = sentinel;
         sentinel.next = sentinel.next.next;
         size--;
 
         return temp;
-
-
+        }
 
     }
-    public Dung removeLast(){
-        Dung temp = sentinel.prev.item;
+    public T removeLast(){
+        if (size == 0){
+            return null;
+        } else {
+        T temp = sentinel.prev.item;
         sentinel.prev.prev.next = sentinel;
         sentinel.prev = sentinel.prev.prev;
         size--;
         return temp;
+        }
 
     }
-    public Dung get(int index){
+    public T get(int index){
         if (index > size - 1 || index < 0){
             return null;
         }
@@ -102,19 +108,18 @@ public class LinkedListDeque<Dung> {
         return temp.item;
 
     }
-    public Dung getRecursive(int index){
+    public T getRecursive(int index){
         if (index > size - 1 || index < 0){
             return null;
         }
         return GetHelper(index, sentinel.next);
     }
-    private Dung GetHelper(int index, Addnode a){
-        Dung temp;
+    private T GetHelper(int index, Addnode a){
+        T temp;
         if (index == 0){
             temp = a.item;
             return temp;
-        }
-        else {
+        } else {
             temp = GetHelper(index - 1, a.next);
         }
         return temp;
