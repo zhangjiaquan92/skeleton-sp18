@@ -23,7 +23,7 @@ public class TestPalindrome {
         //boolean f = palindrome.isPalindrome("cart");
         //boolean e = palindrome.isPalindrome("horse");
         //boolean o = palindrome.isPalindrome("a");
-        assertTrue("input: racecar, output:false, expect: true ",d);
+        assertTrue("input: racecar, output:false, expect: true ", d);
        // assertFalse("input: horse, output:true, expect: false ",e);
        // assertFalse("input: cart, output:true, expect: false ",f);
         //assertTrue("input: a, output:false, expect: true ",o);
@@ -41,9 +41,9 @@ public class TestPalindrome {
         boolean e = offBy5.equalChars('f', 'h');
         boolean f = offBy5.equalChars('f', 'a');
 
-        assertTrue("input: a and f, output:false, expect: true ",d);
-        assertFalse("input: f and h, output:true, expect: false ",e);
-        assertTrue("input: f and a, output:false, expect: true ",f);
+        assertTrue("input: a and f, output:false, expect: true ", d);
+        assertFalse("input: f and h, output:true, expect: false ", e);
+        assertTrue("input: f and a, output:false, expect: true ", f);
 
 
 

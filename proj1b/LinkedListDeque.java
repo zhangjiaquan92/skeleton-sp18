@@ -6,7 +6,7 @@ public class LinkedListDeque<T> implements Deque<T> {
         private T item;
         private Addnode next;
         private Addnode prev;
-        public Addnode(T i, Addnode p, Addnode n) {
+        Addnode(T i, Addnode p, Addnode n) {
 
             item = i;
             next = n;
