@@ -25,7 +25,7 @@ public class Palindrome {
         return true;
     }
 */
-    public Boolean isPalindrome(String word) {
+    public boolean isPalindrome(String word) {
         Deque d = this.wordToDeque(word);
         while (!(d.size() == 0 || d.size() == 1)) {
 

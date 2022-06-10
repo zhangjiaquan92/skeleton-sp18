@@ -18,8 +18,8 @@ public class TestPalindrome {
 
     @Test
     public void testisPalindrome() {
-        CharacterComparator obo = new OffByOne();
-        boolean d = palindrome.isPalindrome("argrr", obo);
+
+        boolean d = palindrome.isPalindrome("racecar");
         //boolean f = palindrome.isPalindrome("cart");
         //boolean e = palindrome.isPalindrome("horse");
         //boolean o = palindrome.isPalindrome("a");
