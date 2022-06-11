@@ -21,10 +21,10 @@ public class TestPalindrome {
 
         boolean d = palindrome.isPalindrome("racecar");
         boolean f = palindrome.isPalindrome("cart");
-        //boolean e = palindrome.isPalindrome("");
+        boolean e = palindrome.isPalindrome("");
         boolean o = palindrome.isPalindrome("a");
         assertTrue("input: racecar, output:false, expect: true ", d);
-        //assertFalse("input: , output:true, expect: false ", e);
+        assertFalse("input: , output:true, expect: false ", e);
         assertFalse("input: cart, output:true, expect: false ", f);
         assertTrue("input: a, output:false, expect: true ", o);
         //System.out.println("test cases passed: racecar, horse, cart, a");
@@ -51,4 +51,16 @@ public class TestPalindrome {
 
 
     }
+
+    @Test
+    public void testIsPalindrome2() {
+        OffByOne offBy1 = new OffByOne();
+        assertTrue(palindrome.isPalindrome("flake", offBy1));
+        assertFalse(palindrome.isPalindrome("", offBy1));
+        assertTrue(palindrome.isPalindrome("bbc", offBy1));
+        assertTrue(palindrome.isPalindrome("m", offBy1));
+        assertFalse(palindrome.isPalindrome("abbd", offBy1));
+    }
+
+
 }

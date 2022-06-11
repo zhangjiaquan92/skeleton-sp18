@@ -21,6 +21,10 @@ public class TestOffByOne {
         boolean z = obo.equalChars('9', ':');
         boolean l = obo.equalChars('\\', ']');
         boolean m = obo.equalChars('b', 'A');
+        boolean x2 = obo.equalChars('a', 'b');
+        boolean cc = obo.equalChars('a', 'a');
+        boolean bb = obo.equalChars('%', '&');
+        boolean mn = obo.equalChars('A', 'b');
 
 
         assertFalse("input: a and e, output:true, expect: false ", y);
@@ -28,6 +32,10 @@ public class TestOffByOne {
         assertTrue("input: b and a, output:false, expect: true ", z);
         assertTrue("input: \\ and ], output:false, expect: true ", l);
         assertFalse("input: b and A, output:true, expect: false ", m);
+        assertTrue("input: a and b, output:false, expect: true ", x2);
+        assertFalse("input: a and a, output:true, expect: false ", cc);
+        assertTrue("input: % and &, output:false, expect: true ", bb);
+        assertFalse("input: a and e, output:true, expect: false ", mn);
 
 
     }
