@@ -8,12 +8,12 @@ public class TestPalindrome {
 
     @Test
     public void testWordToDeque() {
-        Deque d = palindrome.wordToDeque("persiflage");
+        Deque d = palindrome.wordToDeque("abcdetrv");
         String actual = "";
-        for (int i = 0; i < "persiflage".length(); i++) {
+        for (int i = 0; i < "abcdetrv".length(); i++) {
             actual += d.removeFirst();
         }
-        assertEquals("persiflage", actual);
+        assertEquals("abcdetrv", actual);
     }
 
     @Test
@@ -21,12 +21,12 @@ public class TestPalindrome {
 
         boolean d = palindrome.isPalindrome("racecar");
         boolean f = palindrome.isPalindrome("cart");
-        boolean e = palindrome.isPalindrome("");
+        //boolean e = palindrome.isPalindrome("");
         boolean o = palindrome.isPalindrome("a");
         assertTrue("input: racecar, output:false, expect: true ", d);
-       assertFalse("input: , output:true, expect: false ",e);
-       assertFalse("input: cart, output:true, expect: false ",f);
-        assertTrue("input: a, output:false, expect: true ",o);
+        //assertFalse("input: , output:true, expect: false ", e);
+        assertFalse("input: cart, output:true, expect: false ", f);
+        assertTrue("input: a, output:false, expect: true ", o);
         //System.out.println("test cases passed: racecar, horse, cart, a");
 
 
@@ -40,11 +40,12 @@ public class TestPalindrome {
         boolean d = offBy5.equalChars('a', 'f');
         boolean e = offBy5.equalChars('f', 'h');
         boolean f = offBy5.equalChars('f', 'a');
+        boolean g = offBy5.equalChars('F', 'a');
 
         assertTrue("input: a and f, output:false, expect: true ", d);
         assertFalse("input: f and h, output:true, expect: false ", e);
         assertTrue("input: f and a, output:false, expect: true ", f);
-
+        assertFalse("input: F and a, output:true, expect: false ", g);
 
 
 

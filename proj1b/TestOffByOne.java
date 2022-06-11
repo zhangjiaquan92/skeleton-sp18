@@ -20,16 +20,14 @@ public class TestOffByOne {
         boolean y = obo.equalChars('a', 'e');
         boolean z = obo.equalChars('9', ':');
         boolean l = obo.equalChars('\\', ']');
+        boolean m = obo.equalChars('b', 'A');
 
-        int w = '0';
 
-        System.out.println(w);
-
-        //System.out.println(x);
         assertFalse("input: a and e, output:true, expect: false ", y);
         assertTrue("input: b and a, output:false, expect: true ", x);
         assertTrue("input: b and a, output:false, expect: true ", z);
         assertTrue("input: \\ and ], output:false, expect: true ", l);
+        assertFalse("input: b and A, output:true, expect: false ", m);
 
 
     }
