@@ -18,7 +18,18 @@ public class TestOffByOne {
         OffByOne obo = new OffByOne();
         boolean x = obo.equalChars('b', 'a');
         boolean y = obo.equalChars('a', 'e');
-        System.out.println(x);
+        boolean z = obo.equalChars('9', ':');
+        boolean l = obo.equalChars('\\', ']');
+
+        int w = '0';
+
+        System.out.println(w);
+
+        //System.out.println(x);
+        assertFalse("input: a and e, output:true, expect: false ", y);
+        assertTrue("input: b and a, output:false, expect: true ", x);
+        assertTrue("input: b and a, output:false, expect: true ", z);
+        assertTrue("input: \\ and ], output:false, expect: true ", l);
 
 
     }
