@@ -60,7 +60,17 @@ public class TestPalindrome {
         assertTrue(palindrome.isPalindrome("bbc", offBy1));
         assertTrue(palindrome.isPalindrome("m", offBy1));
         assertFalse(palindrome.isPalindrome("abbd", offBy1));
+        assertFalse(palindrome.isPalindrome("a%bd", offBy1));
     }
 
+    @Test
+    public void testIsPalindrome3() {
+        OffByN offBy5 = new OffByN(5);
+        assertTrue(palindrome.isPalindrome("totty", offBy5));
+        assertFalse(palindrome.isPalindrome("", offBy5));
+        assertTrue(palindrome.isPalindrome("cafh", offBy5));
+        assertTrue(palindrome.isPalindrome("m", offBy5));
+        assertFalse(palindrome.isPalindrome("abcd", offBy5));
+    }
 
 }

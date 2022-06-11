@@ -7,7 +7,7 @@ public class PalindromeFinder {
         Palindrome palindrome = new Palindrome();
 
         //CharacterComparator obo = new OffByOne();
-        OffByN offBy5 = new OffByN(4);
+        OffByN offBy5 = new OffByN(5);
 
         while (!in.isEmpty()) {
             String word = in.readString();
