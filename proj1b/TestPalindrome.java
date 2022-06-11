@@ -20,13 +20,13 @@ public class TestPalindrome {
     public void testisPalindrome() {
 
         boolean d = palindrome.isPalindrome("racecar");
-        //boolean f = palindrome.isPalindrome("cart");
-        //boolean e = palindrome.isPalindrome("horse");
-        //boolean o = palindrome.isPalindrome("a");
+        boolean f = palindrome.isPalindrome("cart");
+        boolean e = palindrome.isPalindrome("");
+        boolean o = palindrome.isPalindrome("a");
         assertTrue("input: racecar, output:false, expect: true ", d);
-       // assertFalse("input: horse, output:true, expect: false ",e);
-       // assertFalse("input: cart, output:true, expect: false ",f);
-        //assertTrue("input: a, output:false, expect: true ",o);
+       assertFalse("input: , output:true, expect: false ",e);
+       assertFalse("input: cart, output:true, expect: false ",f);
+        assertTrue("input: a, output:false, expect: true ",o);
         //System.out.println("test cases passed: racecar, horse, cart, a");
 
 
