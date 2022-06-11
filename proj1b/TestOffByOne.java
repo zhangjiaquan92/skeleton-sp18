@@ -11,6 +11,7 @@ public class TestOffByOne {
     Uncomment this class once you've created your
     CharacterComparator interface and OffByOne class. **/
     static CharacterComparator offByOne = new OffByOne();
+
     @Test
     public void testequalChars() {
 
