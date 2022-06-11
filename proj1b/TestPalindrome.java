@@ -27,10 +27,13 @@ public class TestPalindrome {
         boolean f = palindrome.isPalindrome("cart");
         boolean e = palindrome.isPalindrome("");
         boolean o = palindrome.isPalindrome("a");
+        boolean p = palindrome.isPalindrome("abcba");
+        System.out.println(p);
         assertTrue("input: racecar, output:false, expect: true ", d);
         assertFalse("input: , output:true, expect: false ", e);
         assertFalse("input: cart, output:true, expect: false ", f);
         assertTrue("input: a, output:false, expect: true ", o);
+        assertFalse("input: abcba, output:true, expect: false ", p);
         //System.out.println("test cases passed: racecar, horse, cart, a");
 
 
@@ -40,7 +43,7 @@ public class TestPalindrome {
 
     @Test
     public void testnewPalindrome() {
-        OffByN offBy5 = new OffByN(5);
+        //OffByN offBy5 = new OffByN(5);
         boolean d = offBy5.equalChars('a', 'f');
         boolean e = offBy5.equalChars('f', 'h');
         boolean f = offBy5.equalChars('f', 'a');
@@ -59,12 +62,14 @@ public class TestPalindrome {
     @Test
     public void testIsPalindrome2() {
         //OffByOne offBy1 = new OffByOne();
-        assertTrue(palindrome.isPalindrome("flake", offBy1));
-        assertFalse(palindrome.isPalindrome("", offBy1));
-        assertTrue(palindrome.isPalindrome("bbc", offBy1));
-        assertTrue(palindrome.isPalindrome("m", offBy1));
-        assertFalse(palindrome.isPalindrome("abbd", offBy1));
-        assertFalse(palindrome.isPalindrome("a%bd", offBy1));
+        assertTrue(palindrome.isPalindrome("aba"));
+        assertFalse(palindrome.isPalindrome(""));
+        assertFalse(palindrome.isPalindrome("bbc"));
+        assertTrue(palindrome.isPalindrome("m"));
+        assertTrue(palindrome.isPalindrome("abba"));
+        assertFalse(palindrome.isPalindrome("abd"));
+        assertTrue(palindrome.isPalindrome("aa"));
+        assertTrue(palindrome.isPalindrome("bdcdb"));
     }
 
     @Test
@@ -73,7 +78,7 @@ public class TestPalindrome {
         assertTrue(palindrome.isPalindrome("totty", offBy5));
         assertFalse(palindrome.isPalindrome("", offBy5));
         assertTrue(palindrome.isPalindrome("cafh", offBy5));
-        assertTrue(palindrome.isPalindrome("m", offBy5));
+        assertTrue(palindrome.isPalindrome("c", offBy5));
         assertFalse(palindrome.isPalindrome("abcd", offBy5));
     }
 
