@@ -25,15 +25,15 @@ public class TestPalindrome {
 
         boolean d = palindrome.isPalindrome("racecar");
         boolean f = palindrome.isPalindrome("cart");
-        boolean e = palindrome.isPalindrome("");
+        //boolean e = palindrome.isPalindrome("");
         boolean o = palindrome.isPalindrome("a");
         boolean p = palindrome.isPalindrome("abcba");
-        System.out.println(p);
+        //System.out.println(p);
         assertTrue("input: racecar, output:false, expect: true ", d);
-        assertFalse("input: , output:true, expect: false ", e);
+        //assertFalse("input: , output:true, expect: false ", e);
         assertFalse("input: cart, output:true, expect: false ", f);
         assertTrue("input: a, output:false, expect: true ", o);
-        assertFalse("input: abcba, output:true, expect: false ", p);
+        assertTrue("input: abcba, output:true, expect: True ", p);
         //System.out.println("test cases passed: racecar, horse, cart, a");
 
 
@@ -63,7 +63,7 @@ public class TestPalindrome {
     public void testIsPalindrome2() {
         //OffByOne offBy1 = new OffByOne();
         assertTrue(palindrome.isPalindrome("aba"));
-        assertFalse(palindrome.isPalindrome(""));
+        assertTrue(palindrome.isPalindrome(""));
         assertFalse(palindrome.isPalindrome("bbc"));
         assertTrue(palindrome.isPalindrome("m"));
         assertTrue(palindrome.isPalindrome("abba"));
@@ -76,10 +76,11 @@ public class TestPalindrome {
     public void testIsPalindrome3() {
         //OffByN offBy5 = new OffByN(5);
         assertTrue(palindrome.isPalindrome("totty", offBy5));
-        assertFalse(palindrome.isPalindrome("", offBy5));
+        assertTrue(palindrome.isPalindrome("", offBy5));
         assertTrue(palindrome.isPalindrome("cafh", offBy5));
         assertTrue(palindrome.isPalindrome("c", offBy5));
         assertFalse(palindrome.isPalindrome("abcd", offBy5));
+        assertFalse(palindrome.isPalindrome("cccccc", offBy5));
     }
 
 }
