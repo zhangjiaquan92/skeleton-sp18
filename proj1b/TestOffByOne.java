@@ -15,16 +15,16 @@ public class TestOffByOne {
     public void testequalChars() {
 
 
-        OffByOne obo = new OffByOne();
-        boolean x = obo.equalChars('b', 'a');
-        boolean y = obo.equalChars('a', 'e');
-        boolean z = obo.equalChars('9', ':');
-        boolean l = obo.equalChars('\\', ']');
-        boolean m = obo.equalChars('b', 'A');
-        boolean x2 = obo.equalChars('a', 'b');
-        boolean cc = obo.equalChars('a', 'a');
-        boolean bb = obo.equalChars('%', '&');
-        boolean mn = obo.equalChars('A', 'b');
+
+        boolean x = offByOne.equalChars('b', 'a');
+        boolean y = offByOne.equalChars('a', 'e');
+        boolean z = offByOne.equalChars('9', ':');
+        boolean l = offByOne.equalChars('\\', ']');
+        boolean m = offByOne.equalChars('b', 'A');
+        boolean x2 = offByOne.equalChars('a', 'b');
+        boolean cc = offByOne.equalChars('a', 'a');
+        boolean bb = offByOne.equalChars('%', '&');
+        boolean mn = offByOne.equalChars('A', 'b');
 
 
         assertFalse("input: a and e, output:true, expect: false ", y);
