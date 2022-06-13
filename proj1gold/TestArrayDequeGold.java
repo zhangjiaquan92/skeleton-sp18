@@ -41,17 +41,15 @@ public class TestArrayDequeGold {
             if (chkk == 1) {
                 Integer actual = studout.removeLast();
                 Integer expected = soluout.removeLast();
-                out = out + "removeLast()";
-                assertEquals(out + ", student was " + actual + ", correct was " + expected,
-                        expected, actual);
-                out = out + "\n";
+                out = out + "removeLast()\n";
+                assertEquals(out, expected, actual);
+
             } else {
                 Integer actual = studout.removeFirst();
                 Integer expected = soluout.removeFirst();
-                out = out + "removeFirst()";
-                assertEquals(out + ", student was " + actual + ", correct was " + expected,
-                        expected, actual);
-                out = out + "\n";
+                out = out + "removeFirst()\n";
+                assertEquals(out, expected, actual);
+
 
             }
 
