@@ -20,7 +20,7 @@ public class TestArrayDequeGold {
                 soluout.addFirst(randomten);
                 Integer actual = studout.get(0);
                 Integer expected = soluout.get(0);
-                out = out + "\naddFirst(" + randomten + ")";
+                out = out + "addFirst(" + randomten + ")\n";
                 assertEquals(out, expected, actual);
 
 
@@ -30,7 +30,7 @@ public class TestArrayDequeGold {
                 Integer len = soluout.size() - 1;
                 Integer actual = studout.get(len);
                 Integer expected = soluout.get(len);
-                out = out + "\naddLast(" + randomten + ")";
+                out = out + "addLast(" + randomten + ")\n";
                 assertEquals(out, expected, actual);
             }
 
@@ -41,15 +41,17 @@ public class TestArrayDequeGold {
             if (chkk == 1) {
                 Integer actual = studout.removeLast();
                 Integer expected = soluout.removeLast();
-                out = out + "\nremoveLast()";
+                out = out + "removeLast()";
                 assertEquals(out + ", student was " + actual + ", correct was " + expected,
                         expected, actual);
+                out = out + "\n";
             } else {
                 Integer actual = studout.removeFirst();
                 Integer expected = soluout.removeFirst();
-                out = out + "\nremoveFirst()";
+                out = out + "removeFirst()";
                 assertEquals(out + ", student was " + actual + ", correct was " + expected,
                         expected, actual);
+                out = out + "\n";
 
             }
 
