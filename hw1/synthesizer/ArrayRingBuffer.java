@@ -87,12 +87,11 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new selfiterator();
+        return new Selfiterator();
     }
 
 
     private class Selfiterator implements Iterator<T> {
-        private int pt = 0;
 
         public boolean hasNext() {
             return pt < fillCount;
@@ -112,7 +111,9 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
 
 
         }
-
+        private int pt;
+        Selfiterator() {
+            pt = 0;
 
         }
 
