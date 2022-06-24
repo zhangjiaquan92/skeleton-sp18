@@ -58,6 +58,28 @@ public class Point {
                 break;
 
         }
+
+    }
+
+    public void UndoUpdate() {
+        switch (dir) {
+            case "Up":
+                y -= 1;
+                break;
+
+            case "Down":
+                y += 1;
+                break;
+
+            case "Left":
+                x += 1;
+                break;
+
+            case "Right":
+                x -= 1;
+                break;
+
+        }
     }
     public void CountClkWise() {
         switch (dir) {

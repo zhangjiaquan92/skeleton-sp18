@@ -4,69 +4,17 @@ import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 
 public class Draw {
-    // x location on screen
-
-
-
-
 
     public Point DrawHallway(TETile[][] way, Point location, int len) {
-        switch (location.dir) {
-            // to right
-            case "Right":
-                for (int temp = location.x; temp - location.x < len; temp += 1) {
-
-                    way[temp][location.y + 1] = Tileset.WALL;
-                    way[temp][location.y] = Tileset.FLOOR;
-                    way[temp][location.y - 1] = Tileset.WALL;
-
-
-                }
-                location.x += len;
-
-                break;
-                // to left
-            case "Left":
-                for (int temp = location.x; location.x - temp < len; temp -= 1) {
-
-                    way[temp][location.y - 1] = Tileset.WALL;
-                    way[temp][location.y] = Tileset.FLOOR;
-                    way[temp][location.y + 1] = Tileset.WALL;
-
-
-                }
-                location.x -= len;
-                break;
-                // to up
-            case "Up":
-                for (int temp = location.y; temp - location.y < len; temp += 1) {
-
-                    way[location.x - 1][temp] = Tileset.WALL;
-                    way[location.x][temp] = Tileset.FLOOR;
-                    way[location.x + 1][temp] = Tileset.WALL;
-
-
-                }
-                location.y += len;
-                break;
-            case "Down":
-                for (int temp = location.y; location.y - temp < len; temp -= 1) {
-
-                    way[location.x - 1][temp] = Tileset.WALL;
-                    way[location.x][temp] = Tileset.FLOOR;
-                    way[location.x + 1][temp] = Tileset.WALL;
-
-
-                }
-                location.y -= len;
-                break;
-
-
-        }
-
+        location.getbud();
+        this.DrawLine(way, location, "Floor", len);
+        this.DrawLine(way, location.leftbud, "Wall", len);
+        this.DrawLine(way, location.rightbud, "Wall", len);
         return location;
-
     }
+
+
+
     public Point DrawCorner(TETile[][] way, Point loc, String turn) {
 
         loc.getbud();
@@ -74,10 +22,6 @@ public class Draw {
         switch (turn) {
             // to right
             case "Right":
-
-                //Point temp2 = this.Getbud(loc);
-                //this.DrawPix(way, loc, "Wall");
-                //this.ClkWise(loc);
 
                 //draw floor of corner
                 this.DrawPix(way, loc, "Floor");
@@ -108,16 +52,10 @@ public class Draw {
 
                 //draw right bud of corner
                 this.DrawLine(way, loc.rightbud, "Wall", 2);
-
                 loc.rightbud.CountClkWise();
                 this.DrawLine(way, loc.rightbud, "Wall", 3);
 
                 break;
-            // to up
-
-
-
-
 
         }
         return loc;
@@ -137,10 +75,94 @@ public class Draw {
 
         }
 
-
         return location;
 
     }
+    public Point DrawRoom(TETile[][] way, Point location, String Side, int sizel, int sizer, int len) {
+        location.getbud();
+        Point templ;
+        Point tempr;
+        Point out = null;
+        switch (Side) {
+            case "Lefthand":
+                this.DrawLine(way, location, "Floor", 3);
+
+                this.DrawLine(way, location.rightbud, "Wall", 3);
+                out = new Point(location.x, location.y, location.dir);
+                location.UndoUpdate();
+                location.UndoUpdate();
+                location.CountClkWise();
+                location.Update();
+                break;
+
+
+            case "Righthand":
+                this.DrawLine(way, location, "Floor", 3);
+
+                this.DrawLine(way, location.leftbud, "Wall", 3);
+                out = new Point(location.x, location.y, location.dir);
+                location.UndoUpdate();
+                location.UndoUpdate();
+                location.ClkWise();
+                location.Update();
+                break;
+
+        }
+
+            this.DrawHallway(way, location, 3);
+            this.DrawOway(way, location, sizel, sizer, len);
+            location.UndoUpdate();
+            this.DrawPix(way, location, "Wall");
+
+
+
+
+
+
+
+        return out;
+
+    }
+
+
+
+    public Point DrawSwch(TETile[][] way, Point location, String Bread, String Meat, int len, Point store) {
+        Point temp = new Point(store.x,store.y, store.dir);
+        this.DrawPix(way, location, Bread);
+
+        for (int i = 0; i < len; i++) {
+            this.DrawPix(way, location, Meat);
+        }
+        this.DrawPix(way, location, Bread);
+        return temp;
+
+
+
+    }
+    public Point DrawOway(TETile[][] way, Point location, int sizel, int sizer, int len) {
+        Point templ = new Point(location.x,location.y, location.dir);
+        Point tempr = new Point(location.x,location.y, location.dir);
+        Point out = this.DrawLine(way,location, "Floor", len + 2);
+        for (int i = 0; i < sizel; i++) {
+            templ.getbud();
+            templ = this.DrawSwch(way, templ.leftbud, "Wall", "Floor", len, templ.leftbud);
+
+        }
+        templ.getbud();
+        this.DrawLine(way, templ.leftbud, "Wall", len + 2);
+
+        for (int j = 0; j < sizer; j++) {
+            tempr.getbud();
+            tempr = this.DrawSwch(way, tempr.rightbud, "Wall", "Floor", len, tempr.rightbud);
+            //tempr = new Point(tempr.rightbud.x, tempr.rightbud.y, tempr.rightbud.dir);
+
+        }
+        tempr.getbud();
+        this.DrawLine(way, tempr.rightbud, "Wall", len + 2);
+
+        return out;
+    }
+
 
     public Point DrawLine(TETile[][] way, Point location, String Type, int len) {
         for (int i = 0; i < len; i++) {
@@ -152,15 +174,8 @@ public class Draw {
     }
 
 
-
-
-
-
-
-
-
     public static void main(String[] args) {
-        //MapGen tert = new MapGen();
+
         TERenderer tert = new TERenderer();
         tert.initialize(50, 50);
 
@@ -173,26 +188,25 @@ public class Draw {
         }
         Draw test = new Draw();
 
-        /*
-
-
-
-        for (int temp = 15; temp - 15 < 5; temp += 1) {
-
-            world[temp][5] = Tileset.WALL;
-            world[temp][5 + 1] = Tileset.FLOOR;
-            world[temp][5 + 2] = Tileset.WALL;
-        }
-        */
         Point location = new Point(20,20, "Up");
-
 
         location = test.DrawHallway(world, location, 10);
 
 
 
+
         location = test.DrawCorner(world, location, "Left");
         location = test.DrawHallway(world, location, 5);
+        location = test.DrawRoom(world, location, "Lefthand", 2,0, 2);
+        location = test.DrawHallway(world, location, 3);
+        System.out.println(location.x);
+        System.out.println(location.y);
+        System.out.println(location.dir);
+        location = test.DrawOway(world, location, 0,2, 2);
+        System.out.println(location.x);
+        System.out.println(location.y);
+        System.out.println(location.dir);
+        location = test.DrawHallway(world, location, 3);
 
 
         tert.renderFrame(world);
