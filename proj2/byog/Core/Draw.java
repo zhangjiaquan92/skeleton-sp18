@@ -83,6 +83,21 @@ public class Draw {
         Point templ;
         Point tempr;
         Point out = null;
+        out = this.BranchUp(way, location, Side);
+
+            this.DrawHallway(way, location, 3);
+            this.DrawOway(way, location, sizel, sizer, len);
+            location.UndoUpdate();
+            this.DrawPix(way, location, "Wall");
+
+
+        return out;
+
+    }
+
+    public Point BranchUp(TETile[][] way, Point location, String Side) {
+        //out return the location after branch finish
+        Point out = null;
         switch (Side) {
             case "Lefthand":
                 this.DrawLine(way, location, "Floor", 3);
@@ -108,23 +123,8 @@ public class Draw {
                 break;
 
         }
-
-            this.DrawHallway(way, location, 3);
-            this.DrawOway(way, location, sizel, sizer, len);
-            location.UndoUpdate();
-            this.DrawPix(way, location, "Wall");
-
-
-
-
-
-
-
         return out;
-
     }
-
-
 
     public Point DrawSwch(TETile[][] way, Point location, String Bread, String Meat, int len, Point store) {
         Point temp = new Point(store.x,store.y, store.dir);
@@ -195,18 +195,22 @@ public class Draw {
 
 
 
-        location = test.DrawCorner(world, location, "Left");
+        location = test.DrawCorner(world, location, "Right");
         location = test.DrawHallway(world, location, 5);
-        location = test.DrawRoom(world, location, "Lefthand", 2,0, 2);
+        location = test.DrawRoom(world, location, "Lefthand", 2,4, 2);
         location = test.DrawHallway(world, location, 3);
         System.out.println(location.x);
         System.out.println(location.y);
         System.out.println(location.dir);
-        location = test.DrawOway(world, location, 0,2, 2);
+        location = test.DrawOway(world, location, 3,2, 2);
         System.out.println(location.x);
         System.out.println(location.y);
         System.out.println(location.dir);
         location = test.DrawHallway(world, location, 3);
+        Point next = test.BranchUp(world, location, "Righthand");
+        test.DrawHallway(world, location, 5);
+        test.DrawOway(world, location, 3,2, 2);
+        test.DrawOway(world, next, 3,2, 2);
 
 
         tert.renderFrame(world);
