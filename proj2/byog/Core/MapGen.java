@@ -3,11 +3,30 @@ import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 
-public class MapGen {
-    private int WIDTH = 60;
-    private int HEIGHT = 30;
+import java.util.Random;
 
-    public void BackG() {
+
+
+public class MapGen {
+    int WIDTH;
+    int HEIGHT;
+    private final long SEED;
+    Random RANDOM;
+    Point Preloc = null;
+    Point Location = new Point(5,5,"Right");
+
+    public MapGen(int wid, int height, long seed) {
+        WIDTH = wid;
+        HEIGHT = height;
+        SEED = seed;
+        RANDOM = new Random(SEED);
+
+    }
+
+
+
+    // background build
+    public void BackG(int WIDTH, int HEIGHT) {
         // initialize the tile rendering engine with a window of size WIDTH x HEIGHT
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
@@ -19,13 +38,29 @@ public class MapGen {
                 world[x][y] = Tileset.NOTHING;
             }
         }
-
-        // fills in a block 14 tiles wide by 4 tiles tall
-
-
-        // draws the world to the screen
-
     }
+
+
+    public void RandomMap(Random RANDOM) {
+        Draw pen = new Draw(Location);
+        int temp;
+        int token = 7;
+        temp = RANDOM.nextInt(token);
+        switch (temp) {
+            case 1: //draw Hallway
+
+
+
+        }
+
+
+
+        }
+
+
+
+
+
 }
 
 

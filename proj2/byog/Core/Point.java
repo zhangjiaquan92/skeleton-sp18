@@ -128,4 +128,27 @@ public class Point {
         }
 
     }
+    public void ReverseDir() {
+        switch (dir) {
+            case "Up":
+                dir = "Down";
+                break;
+
+
+            case "Right":
+                dir = "Left";
+                break;
+
+            case "Down":
+                dir = "Up";
+                break;
+
+            case "Left":
+                dir = "Right";
+                break;
+
+
+        }
+
+    }
 }
