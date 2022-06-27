@@ -6,18 +6,20 @@ import byog.TileEngine.Tileset;
 import java.util.Random;
 
 public class Draw {
-    Point loc = null;
-    public Draw (Point location) {
-        loc = location;
+    Point location = null;
+    Point backup = new Point(1,1,"Up");
+    public Draw (Point loca) {
+        location = loca;
+
 
     }
-    public Point Door(TETile[][] way, Point location) {
+    public Point Door(TETile[][] way) {
 
 
         location.getbud();
 
         this.DrawLine(way, location, "Floor", 1);
-        this.DrawLine(way, location.leftbud, "LOCKED_DOOR", 1);
+        this.DrawLine(way, location.leftbud, "Door", 1);
         this.DrawLine(way, location.rightbud, "Wall", 1);
 
         return location;
@@ -25,28 +27,26 @@ public class Draw {
 
 
     //return Point will be the start location of the drawing
-    public Point DrawHallway(TETile[][] way, Point location, int len) {
-
-
-
+    public Point DrawHallway(TETile[][] way, int len) {
+        backup.CopyLoc(location);
         location.getbud();
 
         this.DrawLine(way, location, "Floor", len);
         this.DrawLine(way, location.leftbud, "Wall", len);
         this.DrawLine(way, location.rightbud, "Wall", len);
 
-        return location;
+        return backup;
     }
 
-    public Point ReverseHallway(TETile[][] way, Point location, Point start) {
+    public Point ReverseHallway(TETile[][] way) {
         location.ReverseDir();
-        System.out.println(!(location.x == start.x && location.y == start.y));
+        System.out.println(!(location.x == backup.x && location.y == backup.y));
         System.out.println(location.x);
-        System.out.println(start.x);
+        System.out.println(backup.x);
         System.out.println(location.y);
-        System.out.println(start.y);
+        System.out.println(backup.y);
 
-        while (!(location.x == start.x && location.y == start.y)) {
+        while (!(location.x == backup.x && location.y == backup.y)) {
             System.out.println("testsetes");
             location.getbud();
             this.DrawPix(way, location, "Nothing");
@@ -61,50 +61,50 @@ public class Draw {
 
     // will not use DrawCorner most of the time, use the BranchUp instead to leave backdoor
     // bound hitting
-    public Point DrawCorner(TETile[][] way, Point loc, String turn) {
+    public Point DrawCorner(TETile[][] way, String turn) {
 
-        loc.getbud();
+        location.getbud();
 
         switch (turn) {
             // to right
             case "Right":
 
                 //draw floor of corner
-                this.DrawPix(way, loc, "Floor");
-                loc.ClkWise();
-                this.DrawLine(way,loc, "Floor", 2);
+                this.DrawPix(way, location, "Floor");
+                location.ClkWise();
+                this.DrawLine(way,location, "Floor", 2);
                 //draw left bud of corner
-                this.DrawLine(way, loc.leftbud, "Wall", 2);
-                loc.leftbud.ClkWise();
-                this.DrawLine(way, loc.leftbud, "Wall", 3);
+                this.DrawLine(way, location.leftbud, "Wall", 2);
+                location.leftbud.ClkWise();
+                this.DrawLine(way, location.leftbud, "Wall", 3);
 
 
                 //draw right bud of corner
-                this.DrawPix(way, loc.rightbud, "Wall");
-                loc.rightbud.ClkWise();
+                this.DrawPix(way, location.rightbud, "Wall");
+                location.rightbud.ClkWise();
 
                 break;
 
             // to left
             case "Left":
                 //draw floor of corner
-                this.DrawPix(way, loc, "Floor");
-                loc.CountClkWise();
-                this.DrawLine(way, loc, "Floor", 2);
+                this.DrawPix(way, location, "Floor");
+                location.CountClkWise();
+                this.DrawLine(way, location, "Floor", 2);
 
                 //draw left bud of corner
-                this.DrawPix(way, loc.leftbud, "Wall");
-                loc.leftbud.CountClkWise();
+                this.DrawPix(way, location.leftbud, "Wall");
+                location.leftbud.CountClkWise();
 
                 //draw right bud of corner
-                this.DrawLine(way, loc.rightbud, "Wall", 2);
-                loc.rightbud.CountClkWise();
-                this.DrawLine(way, loc.rightbud, "Wall", 3);
+                this.DrawLine(way, location.rightbud, "Wall", 2);
+                location.rightbud.CountClkWise();
+                this.DrawLine(way, location.rightbud, "Wall", 3);
 
                 break;
 
         }
-        return loc;
+        return location;
     }
 
     //DrawPix method will return false if location hit bound of map
@@ -147,25 +147,31 @@ public class Draw {
         return true;
 
     }
-    public Point DrawRoom(TETile[][] way, Point location, String Side, int sizel, int sizer, int len) {
-        location.getbud();
-        Point templ;
-        Point tempr;
+    public Point DrawRoom(TETile[][] way, String Side, int sizel, int sizer, int len) {
+        backup.CopyLoc(location);
+
+        //Point templ;
+        //Point tempr;
         Point out = null;
-        out = this.BranchUp(way, location, Side);
+        out = this.BranchUp(way, Side);
 
-            this.DrawHallway(way, location, 3);
-            this.DrawOway(way, location, sizel, sizer, len);
+            this.DrawHallway(way, 1);
+            this.DrawOway(way, sizel, sizer, len);
 
-            this.DrawPix(way, location, "Wall");
+            this.BranchEnd(way,out);
+
+            location.CopyLoc(out);
 
 
 
-        return out;
+        return backup;
 
     }
 
-    public Point BranchUp(TETile[][] way, Point location, String Side) {
+    public Point BranchUp(TETile[][] way, String Side) {
+        backup.CopyLoc(location);
+        location.getbud();
+
         //out return the location after branch finish
         Point out = null;
         switch (Side) {
@@ -193,13 +199,16 @@ public class Draw {
                 break;
 
         }
-        this.DrawHallway(way, location, 2);
+        //this.DrawHallway(way, 2);
+        //location = new Point(out.x, out.y, out.dir);
+        backup.CopyLoc(out);
 
         return out;
     }
-    public Point BranchEnd (TETile[][] way, Point location, Point output){
+    public Point BranchEnd (TETile[][] way, Point output){
         this.DrawPix(way, location, "Wall");
         //output is the location after branch finish, which is the output of BranchUp.
+        location.CopyLoc(output);
         return output;
     }
 
@@ -216,7 +225,7 @@ public class Draw {
 
 
     }
-    public Point DrawOway(TETile[][] way, Point location, int sizel, int sizer, int len) {
+    public Point DrawOway(TETile[][] way, int sizel, int sizer, int len) {
         Point templ = new Point(location.x,location.y, location.dir);
         Point tempr = new Point(location.x,location.y, location.dir);
         Point out = this.DrawLine(way,location, "Floor", len + 1);
@@ -270,38 +279,56 @@ public class Draw {
         Point location = new Point(10,10, "Up");
         Draw test = new Draw(location);
 
-       test.DrawHallway(world, location, 5);
+       test.DrawHallway(world, 5);
         //tert.renderFrame(world);
 
 
 
 
-        test.DrawCorner(world, location, "Right");
-        test.DrawHallway(world, location, 5);
-        location = test.DrawRoom(world, location, "Lefthand", 2,4, 2);
+
+
+        test.DrawCorner(world, "Right");
+        test.DrawHallway(world, 5);
+        test.DrawRoom(world, "Lefthand", 0,2, 0);
+        //test.DrawHallway(world, 5);
+        test.DrawRoom(world, "Lefthand", 0,1, 0);
+        System.out.println("case 0 snake ");
+        test.DrawCorner(world,"Left");
+        test.DrawCorner(world, "Right");
+       test.BranchUp(world, "Righthand");
+       test.DrawHallway(world, 3);
+        test.DrawHallway(world, 3);
 
 
         //test.DrawHallway(world, location, 3);
 
-        //System.out.println(location.x);
-        //System.out.println(location.y);
-        //System.out.println(location.dir);
-        test.DrawOway(world, location, 3,2, 2);
+/*
+        test.DrawOway(world, 3,2, 2);
 
-        //System.out.println(location.x);
-        //System.out.println(location.y);
-        //System.out.println(location.dir);
-        location = test.DrawHallway(world, location, 3);
-        Point next = test.BranchUp(world, location, "Righthand");
+        System.out.println(location.x);
+        System.out.println(location.y);
+        System.out.println(location.dir);
+        System.out.println(test.backup.x);
+        System.out.println(test.backup.y);
+        System.out.println(test.backup.dir);
+        location = test.DrawHallway(world, 3);
+        System.out.println(location.x);
+        System.out.println(location.y);
+        System.out.println(location.dir);
+        System.out.println(test.backup.x);
+        System.out.println(test.backup.y);
+        System.out.println(test.backup.dir);
+        Point next = test.BranchUp(world, "Righthand");
 
 
 
         //test.DrawOway(world, location, 3,2, 2);
 
-        location = test.DrawOway(world, location, 3,1, 2);
-        //next = test.BranchEnd(world, location, next);
+        location = test.DrawOway(world, 3,1, 2);
+        next = test.BranchEnd(world, next);
         //location = new Point(next.x,next.y, next.dir);
-        //location = test.DrawHallway(world, location, 5);
+        location = test.DrawHallway(world, 5);
+        test.Door(world);
         //location = test.ReverseHallway(world, location, next);
         //location = test.DrawHallway(world, location, 2);
 
@@ -310,7 +337,7 @@ public class Draw {
         //print out the world with command line
 
 
-
+*/
 
 
         tert.renderFrame(world);

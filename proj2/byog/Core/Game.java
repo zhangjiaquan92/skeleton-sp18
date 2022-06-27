@@ -31,8 +31,13 @@ public class Game {
         // TODO: Fill out this method to run the game using the input passed in,
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
+        long seed = 123;
 
-        TETile[][] finalWorldFrame = null;
-        return finalWorldFrame;
+        MapGen result = new MapGen(WIDTH, HEIGHT, seed);
+        result.RandomMap();
+
+
+        //TETile[][] finalWorldFrame = null;
+        return result.world;
     }
 }

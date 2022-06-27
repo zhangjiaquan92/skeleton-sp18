@@ -151,4 +151,10 @@ public class Point {
         }
 
     }
+
+    public void CopyLoc (Point loc) {
+        x = loc.x;
+        y = loc.y;
+        dir = loc.dir;
+    }
 }
