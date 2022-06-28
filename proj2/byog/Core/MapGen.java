@@ -10,7 +10,7 @@ import java.util.Random;
 public class MapGen {
     int WIDTH;
     int HEIGHT;
-    private final long SEED = 1234;
+    private final long SEED = 922345984;
     Random RANDOM;
     Point Preloc = null;
     Point Location = new Point(5,10,"Right");
@@ -50,10 +50,10 @@ public class MapGen {
 
         Draw pen = new Draw(Location);
         int temp;
-        int token = 8;
+        int token = 9;
         pen.DrawPix(world, Location, "Wall");
 
-        for (int i = 0; i <= 18; i++){
+        for (int i = 0; i <= 17; i++){
             System.out.println("cycle: "+i);
             temp = RANDOM.nextInt(token);
             System.out.println("temp is " + temp);
@@ -64,6 +64,7 @@ public class MapGen {
                     break;
 
                 case 2: //draw room
+
                     System.out.println("case 2 draw room");
                     int check = RANDOM.nextInt(2);
                     System.out.println("check is: "+ check);
@@ -76,7 +77,7 @@ public class MapGen {
 
                     if (check == 0) {
 
-                        pen.DrawRoom(world, "Righthand", sizel + 1, sizer + 1, len + 4);
+                        pen.DrawRoom(world, "Righthand", sizel + 1, sizer + 1, len + 1);
                     } else {
                         pen.DrawRoom(world, "Lefthand", sizel + 1, sizer + 1, len  + 1);
                     }
@@ -106,14 +107,23 @@ public class MapGen {
 
                         ttt = pen.BranchUp(world, "Lefthand");
 
+
                     } else {
                         ttt = pen.BranchUp(world, "Righthand");
+
                     }
                     int branchcheck;
 
-                    for (int j = 0; j < 3; j++) {
+                    for (int j = 0; j < 5; j++) {
+                        System.out.println("Boundcheck " + pen.Boundcheck);
+                        if (pen.Boundcheck) {
+                            //pen.DrawHallway(world,1);
+                            //pen.BranchEnd(world, ttt);
+                            break;
+                        }
+
                         System.out.println("branch loop: "+ j);
-                        branchcheck = RANDOM.nextInt(3);
+                        branchcheck = RANDOM.nextInt(2);
                         System.out.println("branchup check is: " + branchcheck);
                         switch (branchcheck) {
                             case 0:
@@ -121,12 +131,15 @@ public class MapGen {
                                 pen.DrawHallway(world, 2);
                                 break;
 
+
+
                             case 1:
                                 System.out.println("branch case 1");
-                                pen.DrawOway(world, RANDOM.nextInt(2) + 1, RANDOM.nextInt(2) + 1, RANDOM.nextInt(2) + 1);
+                                pen.DrawOway(world, RANDOM.nextInt(4) + 1, RANDOM.nextInt(4) + 1, RANDOM.nextInt(4) + 1);
                                 break;
 
-                            case 2:
+
+                                /*
                                 String side = "Lefthand";
                                 System.out.println("branch case 2");
                                 if (RANDOM.nextInt(2) == 0) {
@@ -136,7 +149,7 @@ public class MapGen {
                                 }
                                 pen.DrawRoom(world, side, RANDOM.nextInt(3), RANDOM.nextInt(3), RANDOM.nextInt(3));
 
-                                break;
+                                break;*/
 
                         }
 
@@ -144,7 +157,10 @@ public class MapGen {
 
 
                     }
+
                     pen.BranchEnd(world, ttt);
+                    pen.DrawHallway(world, 3);
+
                     break;
 
 
@@ -157,10 +173,13 @@ public class MapGen {
                 break;
 
 
+
+
+                case 8:
                 case 7: // draw door
                     System.out.println("case 6 door");
                     pen.Door(world);
-                    token -= 1;
+                    token -= 2;
                 break;
 
 
@@ -172,11 +191,14 @@ public class MapGen {
 
         }
         if(token == 8) {
+
             pen.Door(world);
 
-        }else {
-            pen.BranchEnd(world, Location);
         }
+
+        //pen.Door(world);
+        pen.BranchEnd(world, Location);
+
 
 
 

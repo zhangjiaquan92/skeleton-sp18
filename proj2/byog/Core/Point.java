@@ -38,6 +38,9 @@ public class Point {
 
 
         }
+
+
+
     }
     public void Update() {
         switch (dir) {

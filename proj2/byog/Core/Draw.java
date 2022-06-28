@@ -8,6 +8,7 @@ import java.util.Random;
 public class Draw {
     Point location = null;
     Point backup = new Point(1,1,"Up");
+    boolean Boundcheck = false;
     public Draw (Point loca) {
         location = loca;
 
@@ -28,6 +29,9 @@ public class Draw {
 
     //return Point will be the start location of the drawing
     public Point DrawHallway(TETile[][] way, int len) {
+        if (Boundcheck) {
+            return location;
+        }
         backup.CopyLoc(location);
         location.getbud();
 
@@ -40,20 +44,41 @@ public class Draw {
 
     public Point ReverseHallway(TETile[][] way) {
         location.ReverseDir();
-        System.out.println(!(location.x == backup.x && location.y == backup.y));
+        /*System.out.println(!(location.x == backup.x && location.y == backup.y));
         System.out.println(location.x);
         System.out.println(backup.x);
         System.out.println(location.y);
-        System.out.println(backup.y);
+        System.out.println(backup.y);*/
 
-        while (!(location.x == backup.x && location.y == backup.y)) {
-            System.out.println("testsetes");
-            location.getbud();
-            this.DrawPix(way, location, "Nothing");
-            this.DrawPix(way, location.leftbud, "Nothing");
-            this.DrawPix(way, location.rightbud, "Nothing");
+        switch (location.dir) {
+            case "Up":
+            case "Down":
+                while (!(location.y == backup.y - 1)) {
+                    //System.out.println("testsetes");
+                    location.getbud();
+                    this.DrawPix(way, location, "Nothing");
+                    this.DrawPix(way, location.leftbud, "Nothing");
+                    this.DrawPix(way, location.rightbud, "Nothing");
+                }
+                break;
+
+            case "Left":
+            case "Right":
+                while (!(location.x == backup.x - 1)) {
+                    //System.out.println("testsetes");
+                    location.getbud();
+                    this.DrawPix(way, location, "Nothing");
+                    this.DrawPix(way, location.leftbud, "Nothing");
+                    this.DrawPix(way, location.rightbud, "Nothing");
+                }
+                break;
+
         }
+
+
         location.ReverseDir();
+        Boundcheck = false;
+        location.Update();
         return location;
     }
 
@@ -62,6 +87,9 @@ public class Draw {
     // will not use DrawCorner most of the time, use the BranchUp instead to leave backdoor
     // bound hitting
     public Point DrawCorner(TETile[][] way, String turn) {
+        if (Boundcheck) {
+            return location;
+        }
 
         location.getbud();
 
@@ -109,45 +137,57 @@ public class Draw {
 
     //DrawPix method will return false if location hit bound of map
     public Boolean DrawPix(TETile[][] way, Point location, String Type) {
-        if (Type.equals("Nothing")) {
-            way[location.x][location.y] = Tileset.NOTHING;
-            location.Update();
-            return true;
 
-        }
-        if (location.x >= way.length || location.y >= way[0].length || location.x < 0 || location.y < 0) {
-            location.UndoUpdate();
-            //if location hit bound of map, return false.
-            return false;
-        }
-        //if pix is filled, update the location only
-        if (!(way[location.x][location.y].description().equals("nothing"))){
-            location.Update();
-            return true;
-        }
-        switch (Type) {
-            case "Wall":
+            if (Type.equals("Nothing")) {
+                way[location.x][location.y] = Tileset.NOTHING;
+                location.Update();
+                return true;
+
+            }
+            if (location.x >= (way.length - 3) || location.y >= (way[0].length - 3) || location.x < 3 || location.y < 3) {
+
+
                 way[location.x][location.y] = Tileset.WALL;
+                if (location.dir.equals("Up") || location.dir.equals("Down")){
+                    location.Update();
+                }
+                //if location hit bound of map, return false.
+                Boundcheck = true;
+                return false;
+            }
+            //if pix is filled, update the location only
+            if (!(way[location.x][location.y].description().equals("nothing"))) {
                 location.Update();
-                break;
+                //Boundcheck = true;
+                return true;
+            }
+            switch (Type) {
+                case "Wall":
+                    way[location.x][location.y] = Tileset.WALL;
+                    location.Update();
+                    break;
 
-            case "Floor":
-                way[location.x][location.y] = Tileset.FLOOR;
-                location.Update();
-                break;
+                case "Floor":
+                    way[location.x][location.y] = Tileset.FLOOR;
+                    location.Update();
+                    break;
 
-            case "Door":
-                way[location.x][location.y] = Tileset.LOCKED_DOOR;
-                location.Update();
-                break;
+                case "Door":
+                    way[location.x][location.y] = Tileset.LOCKED_DOOR;
+                    location.Update();
+                    break;
 
 
-        }
+            }
+
 
         return true;
 
     }
     public Point DrawRoom(TETile[][] way, String Side, int sizel, int sizer, int len) {
+        if (Boundcheck) {
+            return location;
+        }
         backup.CopyLoc(location);
 
         //Point templ;
@@ -159,8 +199,16 @@ public class Draw {
             this.DrawOway(way, sizel, sizer, len);
 
             this.BranchEnd(way,out);
+        location.CopyLoc(out);
 
-            location.CopyLoc(out);
+            if (Side.equals("Righthand")) {
+                this.DrawHallway(way, sizel + 1);
+            }else if(Side.equals("Lefthand")) {
+                this.DrawHallway(way, sizer + 1);
+            }
+
+
+
 
 
 
@@ -169,6 +217,7 @@ public class Draw {
     }
 
     public Point BranchUp(TETile[][] way, String Side) {
+
         backup.CopyLoc(location);
         location.getbud();
 
@@ -199,6 +248,10 @@ public class Draw {
                 break;
 
         }
+        if(Boundcheck) {
+            location.CopyLoc(out);
+            this.ReverseHallway(way);
+        }
         //this.DrawHallway(way, 2);
         //location = new Point(out.x, out.y, out.dir);
         backup.CopyLoc(out);
@@ -209,6 +262,7 @@ public class Draw {
         this.DrawPix(way, location, "Wall");
         //output is the location after branch finish, which is the output of BranchUp.
         location.CopyLoc(output);
+        Boundcheck = false;
         return output;
     }
 
@@ -276,10 +330,10 @@ public class Draw {
 
 
 
-        Point location = new Point(10,10, "Up");
+        Point location = new Point(74,10, "Right");
         Draw test = new Draw(location);
 
-       test.DrawHallway(world, 5);
+       test.DrawHallway(world, 1);
         //tert.renderFrame(world);
 
 
@@ -287,17 +341,19 @@ public class Draw {
 
 
 
-        test.DrawCorner(world, "Right");
-        test.DrawHallway(world, 5);
-        test.DrawRoom(world, "Lefthand", 0,2, 0);
+        //test.DrawCorner(world, "Right");
         //test.DrawHallway(world, 5);
-        test.DrawRoom(world, "Lefthand", 0,1, 0);
-        System.out.println("case 0 snake ");
-        test.DrawCorner(world,"Left");
-        test.DrawCorner(world, "Right");
+        //test.DrawRoom(world, "Lefthand", 0,2, 0);
+        //test.DrawHallway(world, 5);
+        //test.DrawRoom(world, "Lefthand", 0,1, 0);
+        //System.out.println("case 0 snake ");
+        //test.DrawCorner(world,"Left");
+        //test.DrawCorner(world, "Right");
        test.BranchUp(world, "Righthand");
-       test.DrawHallway(world, 3);
-        test.DrawHallway(world, 3);
+        test.DrawHallway(world, 2);
+        test.BranchEnd(world, location);
+       //test.DrawHallway(world, 3);
+        //test.DrawHallway(world, 3);
 
 
         //test.DrawHallway(world, location, 3);
