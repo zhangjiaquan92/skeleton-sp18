@@ -17,11 +17,11 @@ public class Game {
     public long inputhelper(String s) {
         long seed;
         if (s.substring(s.length() - 2).equals(':')) {
-            seed = Long.parseLong(s.substring(1, s.length() - 2));
+            seed = Long.parseLong(s.substring(0, s.length() - 2));
 
 
         } else {
-            seed = Long.parseLong(s.substring(1, s.length() - 1));
+            seed = Long.parseLong(s.substring(0, s.length() - 1));
         }
         return seed;
     }
@@ -49,6 +49,9 @@ public class Game {
 
         MapGen result = new MapGen(WIDTH, HEIGHT, seed);
         result.randomMap();
+        TERenderer tert = new TERenderer();
+        tert.initialize(WIDTH, HEIGHT);
+        tert.renderFrame(result.world);
 
 
 

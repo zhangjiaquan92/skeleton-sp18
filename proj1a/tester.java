@@ -1,6 +1,6 @@
 public class tester {
     public static void main(String[] args) {
-        ArrayDeque<Integer> test =  new ArrayDeque();
+        /*ArrayDeque<Integer> test =  new ArrayDeque();
         Boolean check = test.isEmpty();
         System.out.println("is the list empty? "+check);
 
@@ -34,7 +34,13 @@ public class tester {
         test.addFirst(16);
         System.out.println("prev is : "+test.prev);
         System.out.println("next is : "+test.next);
-        test.printDeque();
+        test.printDeque();*/
+
+        int size = 5;
+        int chekc = 2;
+        int out;
+        //out = chekc * 0.75;
+        System.out.println(chekc * 0.75);
 
 
     }

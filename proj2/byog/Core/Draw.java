@@ -1,5 +1,5 @@
 package byog.Core;
-
+import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 
@@ -148,12 +148,14 @@ public class Draw {
             return true;
 
         }
-        if (loc.x >= (way.length - 3) || loc.y
-                >= (way[0].length - 3) || loc.x < 3 || loc.y < 3) {
+        if (loc.x >= (way.length - 3) || loc.y >= (way[0].length - 3) || loc.x <= 3 || loc.y <= 3) {
 
 
             way[loc.x][loc.y] = Tileset.WALL;
-            if (loc.dir.equals("Up") || loc.dir.equals("Down")) {
+            if ((loc.dir.equals("Up") || loc.dir.equals("Down")) && (loc.x >= (way.length - 3) || loc.x <= 3 )) {
+                loc.update();
+            }
+            if ((loc.dir.equals("Left") || loc.dir.equals("Right")) && (loc.y >= (way[0].length - 3) || loc.y <= 3 )) {
                 loc.update();
             }
                 //if location hit bound of map, return false.
@@ -317,7 +319,7 @@ public class Draw {
 
     }
 
-/*
+
     public static void main(String[] args) {
 
         TERenderer tert = new TERenderer();
@@ -333,16 +335,15 @@ public class Draw {
         }
 
 
-
-        Point location = new Point(74,10, "Right");
+        Point location = new Point(10, 4, "Down");
         Draw test = new Draw(location);
 
-       test.drawHallway(world, 1);
+        test.drawHallway(world, 1);
+        test.drawPix(world, location, "Floor");
+        test.drawPix(world, location, "Floor");
+        test.drawPix(world, location, "Floor");
+        //test.drawOway(world, 3,2,3);
         //tert.renderFrame(world);
-
-
-
-
 
 
         //test.DrawCorner(world, "Right");
@@ -353,10 +354,10 @@ public class Draw {
         //System.out.println("case 0 snake ");
         //test.DrawCorner(world,"Left");
         //test.DrawCorner(world, "Right");
-       test.branchUp(world, "Righthand");
-        test.drawHallway(world, 2);
-        test.branchEnd(world, location);
-       //test.DrawHallway(world, 3);
+        //test.branchUp(world, "Righthand");
+        //test.drawHallway(world, 2);
+        //test.branchEnd(world, location);
+        //test.DrawHallway(world, 3);
         //test.DrawHallway(world, 3);
 
 
@@ -400,11 +401,12 @@ public class Draw {
 
 
 
-        tert.renderFrame(world);
+
 
 
     }
 */
-
+        tert.renderFrame(world);
+    }
 }
 
