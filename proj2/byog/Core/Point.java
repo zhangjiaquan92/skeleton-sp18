@@ -7,16 +7,17 @@ public class Point {
     Point leftbud;
     Point rightbud;
 
-    public Point (int xx, int yy, String dirction) {
+    public Point(int xx, int yy, String dirction) {
         x = xx;
         y = yy;
         dir = dirction;
 
     }
-    public void getbud(){
-        leftbud = new Point(x,y,dir);
-        rightbud = new Point(x,y,dir);
+    public void getbud() {
+        leftbud = new Point(x, y, dir);
+        rightbud = new Point(x, y, dir);
         switch (dir) {
+            default: break;
             case "Up":
                 leftbud.x -= 1;
                 rightbud.x += 1;
@@ -42,8 +43,9 @@ public class Point {
 
 
     }
-    public void Update() {
+    public void update() {
         switch (dir) {
+            default: break;
             case "Up":
                 y += 1;
                 break;
@@ -64,8 +66,9 @@ public class Point {
 
     }
 
-    public void UndoUpdate() {
+    public void undoUpdate() {
         switch (dir) {
+            default: break;
             case "Up":
                 y -= 1;
                 break;
@@ -84,8 +87,9 @@ public class Point {
 
         }
     }
-    public void CountClkWise() {
+    public void countClkWise() {
         switch (dir) {
+            default: break;
             case "Up":
                 dir = "Left";
                 break;
@@ -108,8 +112,9 @@ public class Point {
 
     }
 
-    public void ClkWise() {
+    public void clkWise() {
         switch (dir) {
+            default: break;
             case "Up":
                 dir = "Right";
                 break;
@@ -131,8 +136,9 @@ public class Point {
         }
 
     }
-    public void ReverseDir() {
+    public void reverseDir() {
         switch (dir) {
+            default: break;
             case "Up":
                 dir = "Down";
                 break;
@@ -155,7 +161,7 @@ public class Point {
 
     }
 
-    public void CopyLoc (Point loc) {
+    public void copyLoc(Point loc) {
         x = loc.x;
         y = loc.y;
         dir = loc.dir;

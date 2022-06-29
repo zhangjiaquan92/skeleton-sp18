@@ -14,6 +14,17 @@ public class Game {
      */
     public void playWithKeyboard() {
     }
+    public long inputhelper(String s) {
+        long seed;
+        if (s.substring(s.length() - 2).equals(':')) {
+            seed = Long.parseLong(s.substring(1, s.length() - 2));
+
+
+        } else {
+            seed = Long.parseLong(s.substring(1, s.length() - 1));
+        }
+        return seed;
+    }
 
     /**
      * Method used for autograding and testing the game code. The input string will be a series
@@ -28,16 +39,20 @@ public class Game {
      * @return the 2D TETile[][] representing the state of the world
      */
     public TETile[][] playWithInputString(String input) {
-        // TODO: Fill out this method to run the game using the input passed in,
+        //
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
-        long seed = 123;
+
+        long seed = inputhelper(input);
+
+        System.out.println(seed);
 
         MapGen result = new MapGen(WIDTH, HEIGHT, seed);
-        result.RandomMap();
+        result.randomMap();
 
 
-        //TETile[][] finalWorldFrame = null;
+
         return result.world;
+
     }
 }
