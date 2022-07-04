@@ -51,7 +51,7 @@ public class Game {
 
         long seed = inputhelper(input);
 
-        System.out.println(seed);
+        //System.out.println(seed);
 
         MapGen result = new MapGen(WIDTH, HEIGHT, seed);
         result.randomMap();

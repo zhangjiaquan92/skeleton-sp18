@@ -50,9 +50,9 @@ public class MapGen {
         int token = 9;
         pen.drawPix(world, location, "Wall");
         for (int i = 0; i <= 17; i++) {
-            System.out.println("draw loop : " + i);
+            //System.out.println("draw loop : " + i);
             temp = RANDOM.nextInt(token);
-            System.out.println("temp = "+temp);
+            //System.out.println("temp = "+temp);
             switch (temp) {
                 default: break;
                 case 1: //draw Hallway
@@ -83,14 +83,14 @@ public class MapGen {
                     Point ttt;
                     if (RANDOM.nextInt(2) == 0) {
                         ttt = pen.branchUp(world, "Lefthand");
-                        System.out.println("Lefthand");
+                        //System.out.println("Lefthand");
                     } else {
                         ttt = pen.branchUp(world, "Righthand");
-                        System.out.println("Righthand");
+                        //System.out.println("Righthand");
                     }
                     int branchcheck;
                     for (int j = 0; j < 5; j++) {
-                        System.out.println("Boundcheck " + pen.boundCheck);
+                        //System.out.println("Boundcheck " + pen.boundCheck);
                         if (pen.boundCheck) {
                             break;
                         }
@@ -98,11 +98,11 @@ public class MapGen {
                         switch (branchcheck) {
                             default: break;
                             case 0:
-                                System.out.println("Hallway");
+                                //System.out.println("Hallway");
                                 pen.drawHallway(world, 2); break;
                             case 1:
-                                System.out.println("Oway");
-                                System.out.println("location y : "+location.y);
+                                //System.out.println("Oway");
+                                //System.out.println("location y : "+location.y);
                                 pen.drawOway(world, RANDOM.nextInt(4) + 1, RANDOM.nextInt(4) + 1,
                                         RANDOM.nextInt(4) + 1);
                                 break;
