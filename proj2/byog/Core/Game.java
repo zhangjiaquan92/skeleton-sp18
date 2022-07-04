@@ -16,12 +16,18 @@ public class Game {
     }
     public long inputhelper(String s) {
         long seed;
+        String temp;
+        if (s.substring(0).equals('N') || s.substring(0).equals('n')) {
+            temp = s.substring(1, s.length() - 1);
+        } else {
+            temp = s;
+        }
         if (s.substring(s.length() - 2).equals(':')) {
-            seed = Long.parseLong(s.substring(0, s.length() - 2));
+            seed = Long.parseLong(temp.substring(0, s.length() - 2));
 
 
         } else {
-            seed = Long.parseLong(s.substring(0, s.length() - 1));
+            seed = Long.parseLong(temp.substring(0, s.length() - 1));
         }
         return seed;
     }
