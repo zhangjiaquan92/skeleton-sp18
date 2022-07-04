@@ -33,7 +33,7 @@ public class Game {
 
 
         }
-        if (temp.substring(temp.length() - 1).equals("S")){
+        if (temp.substring(temp.length() - 1).equals("S") || temp.substring(temp.length() - 1).equals("s")){
             temp = temp.substring(0, temp.length() - 1);
             //seed = Long.parseLong(temp.substring(0, temp.length()));
         }
