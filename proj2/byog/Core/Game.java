@@ -27,13 +27,17 @@ public class Game {
         } else {
             temp = s;
         }
-        if (s.substring(temp.length() - 2).equals(":")) {
-            seed = Long.parseLong(temp.substring(0, temp.length() - 2));
+        if (temp.substring(temp.length() - 2).equals(":")) {
+            temp = temp.substring(0, temp.length() - 2);
+            //seed = Long.parseLong(temp.substring(0, temp.length() - 2));
 
 
-        } else {
-            seed = Long.parseLong(temp.substring(0, temp.length()));
         }
+        if (temp.substring(temp.length() - 1).equals("S")){
+            temp = temp.substring(0, temp.length() - 1);
+            //seed = Long.parseLong(temp.substring(0, temp.length()));
+        }
+        seed = Long.parseLong(temp);
         return seed;
     }
 
