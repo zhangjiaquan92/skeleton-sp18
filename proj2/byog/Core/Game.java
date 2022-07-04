@@ -1,7 +1,11 @@
 package byog.Core;
 
+import byog.SaveDemo.World;
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
+import edu.princeton.cs.introcs.StdDraw;
+
+import java.io.*;
 
 public class Game {
     TERenderer ter = new TERenderer();
@@ -16,7 +20,7 @@ public class Game {
     }
     public long inputhelper(String s) {
         long seed;
-        String temp;
+        String temp = s;
         //System.out.println("s is :" + s);
         //System.out.println("s is (0) :" + s.substring(0,1));
         //System.out.println("s is (0) check :" + s.substring(0,1).equals("N"));
@@ -37,6 +41,19 @@ public class Game {
             temp = temp.substring(0, temp.length() - 1);
             //seed = Long.parseLong(temp.substring(0, temp.length()));
         }
+        int i = 0;
+        System.out.println("temp length: " + temp.length());
+
+        while ((i <= temp.length() - 1) && (temp.charAt(i) >= 48) && (temp.charAt(i) <= 57)){
+            //System.out.println(temp.charAt(i));
+            //System.out.println(i);
+            i++;
+
+
+            //N1009835137506199904S
+        }
+        temp = temp.substring(0, i);
+        //System.out.println(temp);
         seed = Long.parseLong(temp);
         return seed;
     }
@@ -64,13 +81,17 @@ public class Game {
 
         MapGen result = new MapGen(WIDTH, HEIGHT, seed);
         result.randomMap();
-        TERenderer tert = new TERenderer();
-        tert.initialize(WIDTH, HEIGHT);
-        tert.renderFrame(result.world);
+        //TERenderer tert = new TERenderer();
+        //tert.initialize(WIDTH, HEIGHT);
+        //tert.renderFrame(result.world);
 
 
 
         return result.world;
 
     }
+
+
+
+
 }
