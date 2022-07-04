@@ -17,17 +17,22 @@ public class Game {
     public long inputhelper(String s) {
         long seed;
         String temp;
-        if (s.substring(0).equals('N') || s.substring(0).equals('n')) {
-            temp = s.substring(1, s.length() - 1);
+        //System.out.println("s is :" + s);
+        //System.out.println("s is (0) :" + s.substring(0,1));
+        //System.out.println("s is (0) check :" + s.substring(0,1).equals("N"));
+        if (s.substring(0,1).equals("N") || s.substring(0,1).equals("n")) {
+            //System.out.println("in to the loop");
+            temp = s.substring(1, s.length());
+            //System.out.println(temp);
         } else {
             temp = s;
         }
-        if (s.substring(s.length() - 2).equals(':')) {
-            seed = Long.parseLong(temp.substring(0, s.length() - 2));
+        if (s.substring(temp.length() - 2).equals(":")) {
+            seed = Long.parseLong(temp.substring(0, temp.length() - 2));
 
 
         } else {
-            seed = Long.parseLong(temp.substring(0, s.length() - 1));
+            seed = Long.parseLong(temp.substring(0, temp.length()));
         }
         return seed;
     }
