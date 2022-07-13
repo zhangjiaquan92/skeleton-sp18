@@ -4,14 +4,14 @@ import edu.princeton.cs.algs4.StdStats;
 //import java.lang.Math;
 
 public class PercolationStats {
-    Percolation temp;
-    int sizeN;
-    int timeT;
-    double[] xlist;
+    private Percolation temp;
+    private int sizeN;
+    private int timeT;
+    private double[] xlist;
 
 
-    int randomX;
-    int randomY;
+    private int randomX;
+    private int randomY;
 
 
 
@@ -34,7 +34,7 @@ public class PercolationStats {
 
             }
 
-            xlist[i] = temp.openSize / (N * N);
+            xlist[i] = temp.numberOfOpenSites() / (N * N);
 
 
 

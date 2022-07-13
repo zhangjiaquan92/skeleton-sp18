@@ -3,11 +3,11 @@ package hw2;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-    WeightedQuickUnionUF list;
-    WeightedQuickUnionUF list2;
-    Object[][] array;
-    int sizeN;
-    int openSize;
+    private WeightedQuickUnionUF list;
+    private WeightedQuickUnionUF list2;
+    private Object[][] array;
+    private int sizeN;
+    private int openSize;
 
 
 
@@ -18,10 +18,10 @@ public class Percolation {
         list = new WeightedQuickUnionUF(N * N + 1);
         list2 = new WeightedQuickUnionUF(N * N + 2);
 
-        for (int i = 1; i < N; i++) {
+        for (int i = 1; i < N + 1; i++) {
             list.union(0, i);
             list2.union(0, i);
-            list2.union(N * N + 2 - i - 1, N * N + 1);
+            list2.union(N * N + 1 - i, N * N + 1);
         }
 
         array = new Object[N][N];
@@ -32,10 +32,10 @@ public class Percolation {
 
 
     }
-    public int oneDhelper(int row, int col) {
-        return ((row) * sizeN + col);
+    private int oneDhelper(int row, int col) {
+        return ((row) * sizeN + col + 1);
     }
-    public void connectHelper(int row, int col) {
+    private void connectHelper(int row, int col) {
         //up check
         if ((row != 0) && isOpen(row - 1, col)) {
             list.union(oneDhelper(row, col), oneDhelper(row - 1, col));
@@ -96,7 +96,7 @@ public class Percolation {
 
     }
 
-    public void printarray() {
+    private void printarray() {
         int i;
         int j;
         System.out.println("array is: ");
