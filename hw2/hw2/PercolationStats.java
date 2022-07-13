@@ -21,7 +21,7 @@ public class PercolationStats {
             throw new IllegalArgumentException("N or T <= 0");
         }
 
-        xlist = new double[T - 1];
+        xlist = new double[T];
 
         for (int i = 0; i < T; i++) {
             temp = pf.make(N);
@@ -40,7 +40,7 @@ public class PercolationStats {
 
         }
 
-        temp = pf.make(N);
+        //temp = pf.make(N);
 
 
         sizeN = N;
