@@ -92,6 +92,9 @@ public class Percolation {
 
     }
     public boolean percolates() { // does the system percolate?
+        if (numberOfOpenSites() == 0) {
+            return false;
+        }
         return list2.connected(0, sizeN * sizeN + 1);
 
     }
