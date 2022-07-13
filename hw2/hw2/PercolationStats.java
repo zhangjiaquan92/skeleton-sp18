@@ -34,7 +34,7 @@ public class PercolationStats {
 
             }
 
-            xlist[i] = temp.numberOfOpenSites() / (double)(N * N);
+            xlist[i] = temp.numberOfOpenSites() / (double) (N * N);
 
 
 
