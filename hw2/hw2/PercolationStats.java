@@ -34,14 +34,11 @@ public class PercolationStats {
 
             }
 
-            xlist[i] = temp.numberOfOpenSites() / (N * N);
+            xlist[i] = temp.numberOfOpenSites() / (double)(N * N);
 
 
 
         }
-
-        //temp = pf.make(N);
-
 
         sizeN = N;
         timeT = T;
