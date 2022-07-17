@@ -16,18 +16,19 @@ public class SimpleOomage implements Oomage {
     public boolean equals(Object o) {
 
 
-        if(o == this) {
+        if (o == this) {
             return true;
         }
 
-        if(o == null) {
+        if (o == null) {
             return false;
         }
-        if(o.getClass() != this.getClass()) {
+        if (o.getClass() != this.getClass()) {
             return false;
         }
         SimpleOomage temp = (SimpleOomage) o;
-        return (this.red == temp.red) && (this.blue == temp.blue) && (this.green == temp.green);
+        return (this.red == temp.red) && (this.blue == temp.blue)
+                && (this.green == temp.green);
 
     }
 
@@ -47,7 +48,8 @@ public class SimpleOomage implements Oomage {
             throw new IllegalArgumentException();
         }
         if ((r % 5 != 0) || (g % 5 != 0) || (b % 5 != 0)) {
-            throw new IllegalArgumentException("red/green/blue values must all be multiples of 5!");
+            throw new IllegalArgumentException
+                    ("red/green/blue values must all be multiples of 5!");
         }
         red = r;
         green = g;
