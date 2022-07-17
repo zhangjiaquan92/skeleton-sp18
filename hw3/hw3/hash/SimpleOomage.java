@@ -48,8 +48,8 @@ public class SimpleOomage implements Oomage {
             throw new IllegalArgumentException();
         }
         if ((r % 5 != 0) || (g % 5 != 0) || (b % 5 != 0)) {
-            throw new IllegalArgumentException
-                    ("red/green/blue values must all be multiples of 5!");
+            throw new IllegalArgumentException("red/green/blue values "
+                    + "must all be multiples of 5!");
         }
         red = r;
         green = g;
