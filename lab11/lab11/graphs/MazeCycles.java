@@ -51,6 +51,7 @@ public class MazeCycles extends MazeExplorer {
         announce();
 
 
+
         for (int u : maze.adj(v)) {
             System.out.println("u is: " + u);
             if (!marked[u]) {
