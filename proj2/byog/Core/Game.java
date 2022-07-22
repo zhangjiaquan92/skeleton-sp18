@@ -81,9 +81,9 @@ public class Game {
 
         MapGen result = new MapGen(WIDTH, HEIGHT, seed);
         result.randomMap();
-        //TERenderer tert = new TERenderer();
-        //tert.initialize(WIDTH, HEIGHT);
-        //tert.renderFrame(result.world);
+        TERenderer tert = new TERenderer();
+        tert.initialize(WIDTH, HEIGHT);
+        tert.renderFrame(result.world);
 
 
 

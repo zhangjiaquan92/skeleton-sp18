@@ -52,16 +52,12 @@ public class Point {
 
             case "Down":
                 y -= 1;
-                if (y < 0) {
-                    y = 0;
-                }
+
                 break;
 
             case "Left":
                 x -= 1;
-                if (x < 0) {
-                    x = 0;
-                }
+
                 break;
 
             case "Right":

@@ -291,7 +291,13 @@ public class Draw {
         Point out = this.drawLine(way, location, "Floor", len + 1);
         for (int i = 0; i < sizel; i++) {
             templ.getbud();
-            templ = this.drawSwch(way, templ.leftbud, "Wall", "Floor", len, templ.leftbud);
+            if (templ.leftbud.dir.equals("right") && templ.leftbud.y <= way.length - 4) {
+
+            } else {
+                templ = this.drawSwch(way, templ.leftbud, "Wall", "Floor", len, templ.leftbud);
+            }
+
+
 
         }
         templ.getbud();

@@ -28,12 +28,8 @@ public class MazeCycles extends MazeExplorer {
         // dfs recursion
 
         edgeTo[0] = 0;
-        dfs_helper(0);
-
-
-
-
-
+        //marked[0] = true;
+        dfs_helper(0, 0);
 
 
 
@@ -42,41 +38,42 @@ public class MazeCycles extends MazeExplorer {
 
     // Helper methods go here
 
-    public void dfs_helper(int v) {
-        marked[v] = true;
+    public void dfs_helper(int v, int parent) {
+
         //announce();
 
+
         if (targetFound == true) {
+            //edgeTo[v] = v;
             return;
         }
+        marked[v] = true;
+        announce();
 
 
-        for (int w : maze.adj(v)) {
-            if (!marked[w]) {
-                marked[w] = true;
-                edgeTo[w] = v;
-                //edgeTo[v] = Integer.MAX_VALUE;
+        for (int u : maze.adj(v)) {
+            System.out.println("u is: " + u);
+            if (!marked[u]) {
+                dfs_helper(u, v);
+                if (targetFound == true) {
+                    edgeTo[u] = v;
+                    System.out.println("in loop, u is: " + u);
+                    //return;
 
+                }
 
-
-
-                dfs_helper(w);
-                //announce();
-
-            } else if (edgeTo[v] != w){
+            } else if (parent != u){
                 targetFound = true;
-                marked[w] = true;
-                edgeTo[w] = v;
-
+                //marked[u] = true;
+                edgeTo[v] = u;
                 announce();
 
                 return;
 
                 //edgeTo[v] = Integer.MAX_VALUE;
-
-
-
             }
+
+
             //edgeTo[v] = Integer.MAX_VALUE;
 
 
