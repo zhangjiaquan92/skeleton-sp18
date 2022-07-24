@@ -88,21 +88,15 @@ public class MazeCycles extends MazeExplorer {
     }
 
     public void dfs_Iter(int v) {
+        int[] parent = new int[maze.V()];
         Stack<Integer> holder = new Stack();
         holder.push(v);
-        //marked[v] = true;
-        int parent = v;
-        while(!holder.isEmpty()) {
-            int temp = holder.pop();
-            if((targetFound) && (temp == parent)){
-                break;
-            }
-            if (targetFound) {
-                int xx = edgeTo[temp];
-                announce();
-                holder.push(xx);
 
+        while(!holder.isEmpty()) {
+            if (targetFound) {
+                return;
             }
+            int temp = holder.pop();
 
             if (!marked[temp]) {
                 marked[temp] = true;
@@ -111,14 +105,27 @@ public class MazeCycles extends MazeExplorer {
             for(int u : maze.adj(temp)) {
                 if (!marked[u]) {
                     holder.push(u);
-                    //edgeTo[u] = temp;
-                    parent = temp;
-                    //announce();
-                } else if (u != parent) {
+                    parent[u] = temp;
+
+                } else if (u != parent[temp]) {
                     targetFound = true;
-                    edgeTo[u] = parent;
-                    holder.push(temp);
+                    parent[u] = temp;
+                    edgeTo[u] = temp;
+                    announce();
+                    int j = temp;
+                    while (j != u) {
+                        edgeTo[j] = parent[j];
+                        announce();
+                        j = edgeTo[j];
+
+                    }
+
+
+                    return;
+
                 }
+
+
             }
 
 
