@@ -1,17 +1,20 @@
 package hw4.puzzle;
 import edu.princeton.cs.algs4.Queue;
-public class Board {
-    int size;
-    int[][] memory;
-    int hammingCount = 0;
-    int manCounter = 0;
+
+import java.util.Objects;
+
+public class Board implements WorldState {
+    private int size;
+    private int[][] memory;
+    private int hammingCount = 0;
+    private int manCounter = 0;
 
 
-    /** Returns the string representation of the board. 
-      * Uncomment this method. */
+
     public Board(int[][] tiles) {
         size = tiles.length;
         memory = new int[size][size];
+
         int temp = 1;
 
         for (int i = 0; i < size; i++) {
@@ -30,21 +33,22 @@ public class Board {
         }
     }
     public int manHelper(int number, int i, int j) {
-        int row = number / size;
-        int col = number % size;
+        int row = (number - 1) / size;
+        int col = (number - 1) % size;
 
-        return (row - i + col - j);
+        return Math.abs(row - i) + Math.abs(col - j);
 
     }
     public int tileAt(int i, int j) {
-        return memory[i - 1][j - 1];
+        return memory[i][j];
 
     }
     public int size() {
         return size;
 
     }
-    public Iterable<WorldState> neighbors() { //http://joshh.ug/neighbors.html
+    public Iterable<WorldState> neighbors() {
+        /*http://joshh.ug/neighbors.html*/
         Queue<WorldState> neighbors = new Queue<>();
         int hug = size();
         int bug = -1;
@@ -88,9 +92,29 @@ public class Board {
 
     }
     public int estimatedDistanceToGoal() {
+        return manCounter;
 
     }
     public boolean equals(Object y) {
+        if (!Objects.nonNull(y)) {
+            return false;
+        }
+        if (this.getClass() != y.getClass()) {
+            return false;
+        }
+        Board temp = (Board) y;
+        if (temp.size != size) {
+            return false;
+        }
+
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (memory[i][j] != temp.memory[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
 
     }
     public String toString() {
@@ -99,7 +123,7 @@ public class Board {
         s.append(N + "\n");
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                s.append(String.format("%2d ", tileAt(i,j)));
+                s.append(String.format("%2d ", tileAt(i, j)));
             }
             s.append("\n");
         }
