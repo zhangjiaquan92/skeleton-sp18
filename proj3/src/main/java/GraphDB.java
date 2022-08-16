@@ -7,6 +7,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Graph for storing all of the intersection (vertex) and road (edge) information.
@@ -26,6 +29,17 @@ public class GraphDB {
      * You do not need to modify this constructor, but you're welcome to do so.
      * @param dbPath Path to the XML file to be parsed.
      */
+    //Mapping the vertice ID to integer starting from 0
+    Map<Long, Integer> vertMap = new HashMap<>();
+    // mapping integer to the lat and lon of the location
+    Map<Integer, double[]> latlonMap = new HashMap<>();
+
+    List<Long> verti = new ArrayList<Long>();
+
+
+    //List<Long>[] adj;
+    GraphBuildingHandler gbhin;
+
     public GraphDB(String dbPath) {
         try {
             File inputFile = new File(dbPath);
@@ -35,6 +49,7 @@ public class GraphDB {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
             GraphBuildingHandler gbh = new GraphBuildingHandler(this);
+            gbhin = gbh;
             saxParser.parse(inputStream, gbh);
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
@@ -66,7 +81,8 @@ public class GraphDB {
      */
     Iterable<Long> vertices() {
         //YOUR CODE HERE, this currently returns only an empty list.
-        return new ArrayList<Long>();
+
+        return verti;
     }
 
     /**
@@ -75,7 +91,11 @@ public class GraphDB {
      * @return An iterable of the ids of the neighbors of v.
      */
     Iterable<Long> adjacent(long v) {
-        return null;
+
+        String temp = String.valueOf(v);
+        int vert = vertMap.get(temp);
+
+        return gbhin.adj[vert];
     }
 
     /**
@@ -136,7 +156,25 @@ public class GraphDB {
      * @return The id of the node in the graph closest to the target.
      */
     long closest(double lon, double lat) {
-        return 0;
+        double saveDist = -1;
+        long saveID = 0;
+        for(int i = 0; i < verti.size(); i++) {
+            long temp = verti.get(i);
+            int ID = vertMap.get(temp);
+            double[] mark = latlonMap.get(ID);
+            double dist = distance(mark[0], mark[1], lon, lat);
+            if (dist == 0) {
+                return temp;
+            }
+            if(saveDist == -1) {
+                saveDist = dist;
+                saveID = temp;
+            } else if(saveDist > dist) {
+                saveDist = dist;
+                saveID = temp;
+            }
+        }
+        return saveID;
     }
 
     /**
@@ -145,7 +183,11 @@ public class GraphDB {
      * @return The longitude of the vertex.
      */
     double lon(long v) {
-        return 0;
+
+        int vert = vertMap.get(v);
+        double[] lonLat = latlonMap.get(vert);
+        return lonLat[0];
+
     }
 
     /**
@@ -154,6 +196,10 @@ public class GraphDB {
      * @return The latitude of the vertex.
      */
     double lat(long v) {
-        return 0;
+
+        int vert = vertMap.get(v);
+        double[] lonLat = latlonMap.get(vert);
+        return lonLat[1];
     }
+
 }

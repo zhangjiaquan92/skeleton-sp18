@@ -8,26 +8,16 @@ import java.util.Map;
  * not draw the output correctly.
  */
 public class Rasterer {
-    /*private double lrlon;
-    private double ullon;
-    private double w;
-    private double h;
-    private double ullat;
-    private double lrlat;
 
 
-*/
+
     //private double w;
     private double[] feetppCon = new double[8];
 
 
 
-    final double lonStart = -122.2998046875;
-    final double lonEnd = -122.2119140625;
-    final double lanStart = 37.892195547244356;
-    final double lanEnd = 37.82280243352756;
-    final double lonDif = lonEnd - lonStart;
-    final double lanDif = lanStart - lanEnd;
+    final double lonDif = MapServer.ROOT_LRLON - MapServer.ROOT_ULLON;
+    final double lanDif = MapServer.ROOT_ULLAT - MapServer.ROOT_LRLAT;
 
 
     // 288200 is only for latitude around 38 degrees north
@@ -100,10 +90,10 @@ public class Rasterer {
 
         int rowEnd = lonCal(lrlon, depthReturn);
         int colEnd = lanCal(lrlat, depthReturn);
-        System.out.println("rowStart is:" + rowStart);
-        System.out.println("colStart is:" + colStart);
-        System.out.println("rowEnd is:" + rowEnd);
-        System.out.println("colEnd is:" + colEnd);
+        //System.out.println("rowStart is:" + rowStart);
+        //System.out.println("colStart is:" + colStart);
+        //System.out.println("rowEnd is:" + rowEnd);
+        //System.out.println("colEnd is:" + colEnd);
 
 
         String[][] gridOut = new String[colEnd - colStart + 1][rowEnd - rowStart + 1];
@@ -121,10 +111,14 @@ public class Rasterer {
         results.put("raster_lr_lat", lonLat[3]);
         results.put("render_grid", gridOut);
         results.put("raster_ul_lat", lonLat[2]);
-        results.put("query_success", true);
 
-
-
+        if((lrlon <= ullon) || (lrlat >= ullat) || (wtemp < 0) || (h < 0)
+                || ((lrlat < MapServer.ROOT_ULLAT) &&(lrlon < MapServer.ROOT_ULLON)) ||
+                ((ullon > MapServer.ROOT_LRLON) &&(ullat < MapServer.ROOT_LRLAT))) {
+            results.put("query_success", false);
+        }else {
+            results.put("query_success", true);
+        }
 
         return results;
     }
@@ -134,10 +128,10 @@ public class Rasterer {
     private int depthupdate(double feetPp) {
         double temp = lonDif;
         for(int i = 0; i < 8; i++) {
-            feetppCon[i] = temp * lonCon / 256;
+            feetppCon[i] = temp * lonCon / MapServer.TILE_SIZE;
             if (feetPp > feetppCon[i]) {
-                System.out.println("feetPp is :" + feetPp);
-                System.out.println("feetppCon [" + i + "] is :" + feetppCon[i]);
+                //System.out.println("feetPp is :" + feetPp);
+                //System.out.println("feetppCon [" + i + "] is :" + feetppCon[i]);
                 return i;
             }
             //System.out.println("temp is :" + temp);
@@ -149,11 +143,11 @@ public class Rasterer {
 
     private int lonCal(double lonIn, int depth) {
         double block = Math.pow(2, depth);
-        System.out.println("block is :" + block);
+        //System.out.println("block is :" + block);
         double blockSize = lonDif / block;
-        System.out.println("blocksize is :" + blockSize);
-        int result = (int) Math.floor(Math.abs(lonIn - lonStart) / blockSize);
-        System.out.println("result is :" + result);
+        //System.out.println("blocksize is :" + blockSize);
+        int result = (int) Math.floor(Math.abs(lonIn - MapServer.ROOT_ULLON) / blockSize);
+        //System.out.println("result is :" + result);
         if(result >= block) {
             result = (int)block - 1;
         }
@@ -161,10 +155,11 @@ public class Rasterer {
 
     }
 
+
     private int lanCal(double lanIn, int depth) {
         double block = Math.pow(2, depth);
         double blockSize = lanDif / block;
-        int result = (int) Math.floor(Math.abs(lanIn - lanStart) / blockSize);
+        int result = (int) Math.floor(Math.abs(lanIn - MapServer.ROOT_ULLAT) / blockSize);
         if(result >= block) {
             result = (int)block - 1;
         }
@@ -181,10 +176,10 @@ public class Rasterer {
         double lanStep = lanDif / block;
         double lonStep = lonDif / block;
         double result[] = new double[4];
-        result[0] = lonStep * rowStart + lonStart;
-        result[1] = lonStep * (rowEnd + 1) + lonStart;
-        result[2] = lanStep * colStart + lanStart;
-        result[3] = lanStep * (colEnd + 1) + lanStart;
+        result[0] = lonStep * rowStart + MapServer.ROOT_ULLON;
+        result[1] = lonStep * (rowEnd + 1) + MapServer.ROOT_ULLON;
+        result[2] = lanStep * colStart + MapServer.ROOT_ULLAT;
+        result[3] = lanStep * (colEnd + 1) + MapServer.ROOT_ULLAT;
         return result;
 
 

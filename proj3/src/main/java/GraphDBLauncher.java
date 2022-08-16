@@ -30,6 +30,7 @@ public class GraphDBLauncher {
         }
 
         long v = g.closest(-122.258207, 37.875352);
+        //System.out.println("in the graphLaucher, the v is :" + v);
         System.out.print("The vertex number closest to -122.258207, 37.875352 is " + v + ", which");
         System.out.println(" has longitude, latitude of: " + g.lon(v) + ", " + g.lat(v));
 

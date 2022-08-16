@@ -1,10 +1,9 @@
+import org.w3c.dom.Node;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  *  Parses OSM XML files using an XML SAX parser. Used to construct the graph of roads for
@@ -38,6 +37,16 @@ public class GraphBuildingHandler extends DefaultHandler {
                     "secondary_link", "tertiary_link"));
     private String activeState = "";
     private final GraphDB g;
+    //Mapping the vertice ID to integer starting from 0
+    //private Map<String, Integer> vertMap = new HashMap<>();
+    // mapping integer to the lat and lon of the location
+    //private Map<Integer, Double[]> latlonMap = new HashMap<>();
+    List<Long>[] adj;
+    private int nodeCount = 0;
+    private int wayCur = -1;
+    private Stack<long[]> wayPair = new Stack<>();
+    private boolean saveCheck = false;
+    private boolean adjCheck = false;
 
     /**
      * Create a new GraphBuildingHandler.
@@ -66,11 +75,30 @@ public class GraphBuildingHandler extends DefaultHandler {
             throws SAXException {
         /* Some example code on how you might begin to parse XML files. */
         if (qName.equals("node")) {
-            /* We encountered a new <node...> tag. */
             activeState = "node";
-//            System.out.println("Node id: " + attributes.getValue("id"));
-//            System.out.println("Node lon: " + attributes.getValue("lon"));
-//            System.out.println("Node lat: " + attributes.getValue("lat"));
+            String vertID = attributes.getValue("id");
+            long vertLong = Long.parseLong(vertID);
+
+            g.vertMap.put(vertLong, nodeCount);
+            String tempLon = attributes.getValue("lon");
+            String tempLat = attributes.getValue("lat");
+            double[] array = new double[]{Double.parseDouble(tempLon), Double.parseDouble(tempLat)};
+
+            g.latlonMap.put(nodeCount, array);
+            //long vertLong = Long.parseLong(vertID);
+            g.verti.add(vertLong);
+
+            nodeCount++;
+
+
+
+            /* We encountered a new <node...> tag. */
+            /*
+            System.out.println("Node id: " + attributes.getValue("id"));
+            System.out.println("Node lon: " + attributes.getValue("lon"));
+            System.out.println("Node lat: " + attributes.getValue("lat"));
+
+             */
 
             /* TODO Use the above information to save a "node" to somewhere. */
             /* Hint: A graph-like structure would be nice. */
@@ -78,9 +106,24 @@ public class GraphBuildingHandler extends DefaultHandler {
         } else if (qName.equals("way")) {
             /* We encountered a new <way...> tag. */
             activeState = "way";
+
+
 //            System.out.println("Beginning a way...");
         } else if (activeState.equals("way") && qName.equals("nd")) {
             /* While looking at a way, we found a <nd...> tag. */
+            String temp = attributes.getValue("ref");
+            long tempLong = Long.parseLong(temp);
+
+
+
+            int out = g.vertMap.get(tempLong);
+            if (wayCur != -1) {
+                long[] adding = new long[]{wayCur, out};
+                wayPair.push(adding);
+            }
+            wayCur = out;
+
+
             //System.out.println("Id of a node in this way: " + attributes.getValue("ref"));
 
             /* TODO Use the above id to make "possible" connections between the nodes in this way */
@@ -98,6 +141,9 @@ public class GraphBuildingHandler extends DefaultHandler {
                 //System.out.println("Max Speed: " + v);
                 /* TODO set the max speed of the "current way" here. */
             } else if (k.equals("highway")) {
+                if(ALLOWED_HIGHWAY_TYPES.contains(v)) {
+                    saveCheck = true;
+                }
                 //System.out.println("Highway type: " + v);
                 /* TODO Figure out whether this way and its connections are valid. */
                 /* Hint: Setting a "flag" is good enough! */
@@ -134,6 +180,27 @@ public class GraphBuildingHandler extends DefaultHandler {
             /* Hint1: If you have stored the possible connections for this way, here's your
             chance to actually connect the nodes together if the way is valid. */
 //            System.out.println("Finishing a way...");
+            if(!adjCheck) {
+                adj = new ArrayList[nodeCount];
+                //System.out.println("size of adj is :" + adj.length);
+                for (int v = 0; v < nodeCount; v++) {
+                    adj[v] = new ArrayList<Long>();
+
+                }
+                adjCheck = true;
+            }
+            if(saveCheck) {
+                while(!wayPair.empty()) {
+                    long[] out = wayPair.pop();
+
+                    adj[(int)out[0]].add(out[1]);
+                    adj[(int)out[1]].add(out[0]);
+                }
+            }else {
+                saveCheck = false;
+                wayPair.clear();
+            }
+            //System.out.println("nodecount is :" + nodeCount);
         }
     }
 
