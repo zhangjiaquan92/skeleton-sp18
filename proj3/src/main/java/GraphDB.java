@@ -34,7 +34,7 @@ public class GraphDB {
     // mapping integer to the lat and lon of the location
     Map<Integer, double[]> latlonMap = new HashMap<>();
 
-    List<Long> verti = new ArrayList<Long>();
+    List<Long> verti = new ArrayList<>();
 
     List<Long>[] adj;
 
@@ -70,19 +70,23 @@ public class GraphDB {
      *  we can reasonably assume this since typically roads are connected.
      */
     private void clean() {
+
         for(int i = 0; i < adj.length; i++) {
             if(adj[i].isEmpty()) {
-                verti.set(i, (long) -1);
+                verti.set(i, -3L);
             }
         }
 
         //reference the removeAll method example from
         // https://www.geeksforgeeks.org/arraylist-removeall-method-in-java-with-examples/
         List<Long> delete = new ArrayList<>();
-        delete.add((long) -1);
+        delete.add(-3L);
         verti.removeAll(delete);
         // TODO: Your code here.
+
+
     }
+
 
     /**
      * Returns an iterable of all vertex IDs in the graph.

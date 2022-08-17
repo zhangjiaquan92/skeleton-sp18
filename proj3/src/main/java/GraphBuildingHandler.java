@@ -209,9 +209,11 @@ public class GraphBuildingHandler extends DefaultHandler {
                     //g.adj[(int)out[1]].add(out[0]);
                 }
             }else {
-                saveCheck = false;
+
                 wayPair.clear();
             }
+            wayCur = -1;
+            saveCheck = false;
             //System.out.println("nodecount is :" + nodeCount);
         }
     }
