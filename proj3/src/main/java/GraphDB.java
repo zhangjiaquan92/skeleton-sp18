@@ -36,9 +36,7 @@ public class GraphDB {
 
     List<Long> verti = new ArrayList<Long>();
 
-
-    //List<Long>[] adj;
-    GraphBuildingHandler gbhin;
+    List<Long>[] adj;
 
     public GraphDB(String dbPath) {
         try {
@@ -49,7 +47,7 @@ public class GraphDB {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
             GraphBuildingHandler gbh = new GraphBuildingHandler(this);
-            gbhin = gbh;
+            //gbhin = gbh;
             saxParser.parse(inputStream, gbh);
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
@@ -72,6 +70,17 @@ public class GraphDB {
      *  we can reasonably assume this since typically roads are connected.
      */
     private void clean() {
+        for(int i = 0; i < adj.length; i++) {
+            if(adj[i].isEmpty()) {
+                verti.set(i, (long) -1);
+            }
+        }
+
+        //reference the removeAll method example from
+        // https://www.geeksforgeeks.org/arraylist-removeall-method-in-java-with-examples/
+        List<Long> delete = new ArrayList<>();
+        delete.add((long) -1);
+        verti.removeAll(delete);
         // TODO: Your code here.
     }
 
@@ -91,11 +100,9 @@ public class GraphDB {
      * @return An iterable of the ids of the neighbors of v.
      */
     Iterable<Long> adjacent(long v) {
-
-        String temp = String.valueOf(v);
-        int vert = vertMap.get(temp);
-
-        return gbhin.adj[vert];
+        int vert = vertMap.get(v);
+        List<Long> adjList = adj[vert];
+        return adjList;
     }
 
     /**

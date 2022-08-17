@@ -41,9 +41,9 @@ public class GraphBuildingHandler extends DefaultHandler {
     //private Map<String, Integer> vertMap = new HashMap<>();
     // mapping integer to the lat and lon of the location
     //private Map<Integer, Double[]> latlonMap = new HashMap<>();
-    List<Long>[] adj;
+    //List<Long>[] adj;
     private int nodeCount = 0;
-    private int wayCur = -1;
+    private long wayCur = -1;
     private Stack<long[]> wayPair = new Stack<>();
     private boolean saveCheck = false;
     private boolean adjCheck = false;
@@ -116,12 +116,12 @@ public class GraphBuildingHandler extends DefaultHandler {
 
 
 
-            int out = g.vertMap.get(tempLong);
+            //long out = g.vertMap.get(tempLong);
             if (wayCur != -1) {
-                long[] adding = new long[]{wayCur, out};
+                long[] adding = new long[]{wayCur, tempLong};
                 wayPair.push(adding);
             }
-            wayCur = out;
+            wayCur = tempLong;
 
 
             //System.out.println("Id of a node in this way: " + attributes.getValue("ref"));
@@ -180,11 +180,13 @@ public class GraphBuildingHandler extends DefaultHandler {
             /* Hint1: If you have stored the possible connections for this way, here's your
             chance to actually connect the nodes together if the way is valid. */
 //            System.out.println("Finishing a way...");
+
+
             if(!adjCheck) {
-                adj = new ArrayList[nodeCount];
+                g.adj = new ArrayList[nodeCount];
                 //System.out.println("size of adj is :" + adj.length);
                 for (int v = 0; v < nodeCount; v++) {
-                    adj[v] = new ArrayList<Long>();
+                    g.adj[v] = new ArrayList<Long>();
 
                 }
                 adjCheck = true;
@@ -192,9 +194,19 @@ public class GraphBuildingHandler extends DefaultHandler {
             if(saveCheck) {
                 while(!wayPair.empty()) {
                     long[] out = wayPair.pop();
+                    long friendOne = out[0];
+                    long friendTwo = out[1];
+                    //System.out.println("friendOne is :" + friendOne);
+                    //System.out.println("friendTwo is :" + friendTwo);
+                    int friend1Map = g.vertMap.get(friendOne);
+                    int friend2Map = g.vertMap.get(friendTwo);
+                    g.adj[friend1Map].add(friendTwo);
+                    g.adj[friend2Map].add(friendOne);
 
-                    adj[(int)out[0]].add(out[1]);
-                    adj[(int)out[1]].add(out[0]);
+
+
+                    //g.adj[(int)out[0]].add(out[1]);
+                    //g.adj[(int)out[1]].add(out[0]);
                 }
             }else {
                 saveCheck = false;
