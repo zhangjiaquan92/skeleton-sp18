@@ -2,6 +2,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.*;
 
 /**
  * This class provides a shortestPath method for finding routes between two points
@@ -25,6 +26,56 @@ public class Router {
      */
     public static List<Long> shortestPath(GraphDB g, double stlon, double stlat,
                                           double destlon, double destlat) {
+        long startID = g.closest(stlon, stlat);
+        long endID = g.closest(destlon, destlat);
+        int startInt = g.vertMap.get(startID);
+        int endInt = g.vertMap.get(endID);
+        double actLon = g.lon(startID);
+        double actLat = g.lat(startID);
+
+        class locNode implements Comparable<locNode> {
+            double lonIn;
+            double latIn;
+            long IDin;
+            double priority;
+
+
+            public locNode (double lon, double lat, long ID, double pri) {
+                lonIn = lon;
+                latIn = lat;
+                IDin = ID;
+                priority = pri;
+            }
+
+            @Override
+            public int compareTo(locNode in) {
+                Double CE = priority;
+                Double AE = in.priority;
+                return CE.compareTo(AE);
+
+            }
+        }
+
+        PriorityQueue<locNode> pq = new PriorityQueue<locNode>();
+
+
+        pq.add(new locNode(actLon, actLat, startID, 10000000));
+        while (!pq.isEmpty()) {
+            locNode temp = pq.poll();
+            long tempID = temp.IDin;
+            if (tempID == endID) {
+                break;
+            }
+            for (long x: g.adjacent(tempID)){
+                double dsv = g.distance(startID, tempID);
+                double edvw = g.distance(tempID, x);
+                double hw = g.distance(x, endID);
+            }
+        }
+
+
+
+
         return null; // FIXME
     }
 
