@@ -32,19 +32,27 @@ public class Router {
         int endInt = g.vertMap.get(endID);
         double actLon = g.lon(startID);
         double actLat = g.lat(startID);
+        Map<Integer, Double> best = new HashMap<>(g.vertMap.size());
+
+        //parentMap is mapping from son to parent
+        Map<Long, Long> parentMap = new HashMap<>();
+        for (int i = 0; i < g.vertMap.size(); i++) {
+            best.put(i, 999999999.9);
+        }
+        List<Long> sol = new ArrayList<>();
 
         class locNode implements Comparable<locNode> {
-            double lonIn;
-            double latIn;
+
             long IDin;
             double priority;
+            locNode parentNode;
 
 
-            public locNode (double lon, double lat, long ID, double pri) {
-                lonIn = lon;
-                latIn = lat;
+            public locNode (long ID, double pri, locNode prev) {
+
                 IDin = ID;
                 priority = pri;
+                parentNode = prev;
             }
 
             @Override
@@ -56,27 +64,44 @@ public class Router {
             }
         }
 
-        PriorityQueue<locNode> pq = new PriorityQueue<locNode>();
+        PriorityQueue<locNode> pq = new PriorityQueue<>();
 
 
-        pq.add(new locNode(actLon, actLat, startID, 10000000));
+        pq.add(new locNode(startID, 999999999, null));
+        best.put(g.vertMap.get(startID), 0.0);
+        //sol.add(startID);
         while (!pq.isEmpty()) {
             locNode temp = pq.poll();
             long tempID = temp.IDin;
             if (tempID == endID) {
+                //sol.push(tempID);
                 break;
+
+
             }
+            double dsv = best.get(g.vertMap.get(tempID));
+            //System.out.println("dsv = " + dsv);
             for (long x: g.adjacent(tempID)){
-                double dsv = g.distance(startID, tempID);
+                //double dsv = g.distance(startID, tempID);
                 double edvw = g.distance(tempID, x);
                 double hw = g.distance(x, endID);
+                if((dsv + edvw) <= best.get(g.vertMap.get(x))) {
+                    best.put(g.vertMap.get(x),  (dsv + edvw));
+                    parentMap.put(x,tempID);
+                    //addPq is the priority distance equals to d(s, v) + ed(v, w) + h(w)
+                    double addPq = dsv + edvw + hw;
+                    pq.add(new locNode(x, addPq, temp));
+                    //sol.add(x);
+                }
             }
         }
-
-
-
-
-        return null; // FIXME
+        long tts = endID;
+        while(tts != startID) {
+            sol.add(0, tts);
+            tts = parentMap.get(tts);
+        }
+        sol.add(0, startID);
+        return sol;
     }
 
     /**

@@ -130,7 +130,7 @@ public class GraphDB {
         double a = Math.sin(dphi / 2.0) * Math.sin(dphi / 2.0);
         a += Math.cos(phi1) * Math.cos(phi2) * Math.sin(dlambda / 2.0) * Math.sin(dlambda / 2.0);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return 3963 * c;
+        return (3963 * c);
     }
 
     /**
@@ -169,18 +169,18 @@ public class GraphDB {
     long closest(double lon, double lat) {
         double saveDist = -1;
         long saveID = 0;
-        for(int i = 0; i < verti.size(); i++) {
+        for (int i = 0; i < verti.size(); i++) {
             long temp = verti.get(i);
-            int ID = vertMap.get(temp);
-            double[] mark = latlonMap.get(ID);
+            int id = vertMap.get(temp);
+            double[] mark = latlonMap.get(id);
             double dist = distance(mark[0], mark[1], lon, lat);
             if (dist == 0) {
                 return temp;
             }
-            if(saveDist == -1) {
+            if (saveDist == -1) {
                 saveDist = dist;
                 saveID = temp;
-            } else if(saveDist > dist) {
+            } else if (saveDist > dist) {
                 saveDist = dist;
                 saveID = temp;
             }
