@@ -33,11 +33,13 @@ public class Router {
         double actLon = g.lon(startID);
         double actLat = g.lat(startID);
         Map<Integer, Double> best = new HashMap<>(g.vertMap.size());
+        boolean[] marking = new boolean[g.vertMap.size()];
 
         //parentMap is mapping from son to parent
         Map<Long, Long> parentMap = new HashMap<>();
         for (int i = 0; i < g.vertMap.size(); i++) {
             best.put(i, 999999999.9);
+            marking[i] = false;
         }
         List<Long> sol = new ArrayList<>();
 
@@ -69,6 +71,7 @@ public class Router {
 
         pq.add(new locNode(startID, 999999999, null));
         best.put(g.vertMap.get(startID), 0.0);
+        marking[g.vertMap.get(startID)] = true;
         //sol.add(startID);
         while (!pq.isEmpty()) {
             locNode temp = pq.poll();
@@ -82,17 +85,22 @@ public class Router {
             double dsv = best.get(g.vertMap.get(tempID));
             //System.out.println("dsv = " + dsv);
             for (long x: g.adjacent(tempID)){
-                //double dsv = g.distance(startID, tempID);
-                double edvw = g.distance(tempID, x);
-                double hw = g.distance(x, endID);
-                if((dsv + edvw) <= best.get(g.vertMap.get(x))) {
-                    best.put(g.vertMap.get(x),  (dsv + edvw));
-                    parentMap.put(x,tempID);
-                    //addPq is the priority distance equals to d(s, v) + ed(v, w) + h(w)
-                    double addPq = dsv + edvw + hw;
-                    pq.add(new locNode(x, addPq, temp));
-                    //sol.add(x);
+                if (marking[g.vertMap.get(x)]){
+                    continue;
+                }else {
+                    double edvw = g.distance(tempID, x);
+                    double hw = g.distance(x, endID);
+                    if((dsv + edvw) <= best.get(g.vertMap.get(x))) {
+                        best.put(g.vertMap.get(x),  (dsv + edvw));
+                        parentMap.put(x,tempID);
+                        //addPq is the priority distance equals to d(s, v) + ed(v, w) + h(w)
+                        double addPq = dsv + edvw + hw;
+                        pq.add(new locNode(x, addPq, temp));
+                        //sol.add(x);
+                    }
                 }
+                //double dsv = g.distance(startID, tempID);
+
             }
         }
         long tts = endID;
