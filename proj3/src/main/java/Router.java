@@ -42,6 +42,7 @@ public class Router {
             marking[i] = false;
         }
         List<Long> sol = new ArrayList<>();
+        //Stack<Long> sol2 = new Stack<>();
 
         class locNode implements Comparable<locNode> {
 
@@ -72,12 +73,16 @@ public class Router {
         pq.add(new locNode(startID, 999999999, null));
         best.put(g.vertMap.get(startID), 0.0);
         //
-        //sol.add(startID);
+        //sol2.push(startID);
+        //int pointer = 0;
         while (!pq.isEmpty()) {
             locNode temp = pq.poll();
 
+
             long tempID = temp.IDin;
+            //sol2.push(tempID);
             if(marking[g.vertMap.get(tempID)]){
+                //sol2.pop();
                 continue;
             }
             if (tempID == endID) {
@@ -94,6 +99,7 @@ public class Router {
                     best.put(g.vertMap.get(x),  (dsv + edvw));
                     parentMap.put(x,tempID);
                     //addPq is the priority distance equals to d(s, v) + ed(v, w) + h(w)
+                    //sol2.push(x);
                     double addPq = dsv + edvw + hw;
                     pq.add(new locNode(x, addPq, temp));
                         //sol.add(x);
