@@ -71,43 +71,43 @@ public class Router {
 
         pq.add(new locNode(startID, 999999999, null));
         best.put(g.vertMap.get(startID), 0.0);
-        marking[g.vertMap.get(startID)] = true;
+        //
         //sol.add(startID);
         while (!pq.isEmpty()) {
             locNode temp = pq.poll();
+
             long tempID = temp.IDin;
+            if(marking[g.vertMap.get(tempID)]){
+                continue;
+            }
             if (tempID == endID) {
                 //sol.push(tempID);
                 break;
-
-
             }
+            marking[g.vertMap.get(startID)] = true;
             double dsv = best.get(g.vertMap.get(tempID));
             //System.out.println("dsv = " + dsv);
             for (long x: g.adjacent(tempID)){
-                if (marking[g.vertMap.get(x)]){
-                    continue;
-                }else {
-                    double edvw = g.distance(tempID, x);
-                    double hw = g.distance(x, endID);
-                    if((dsv + edvw) <= best.get(g.vertMap.get(x))) {
-                        best.put(g.vertMap.get(x),  (dsv + edvw));
-                        parentMap.put(x,tempID);
-                        //addPq is the priority distance equals to d(s, v) + ed(v, w) + h(w)
-                        double addPq = dsv + edvw + hw;
-                        pq.add(new locNode(x, addPq, temp));
+                double edvw = g.distance(tempID, x);
+                double hw = g.distance(x, endID);
+                if((dsv + edvw) <= best.get(g.vertMap.get(x))) {
+                    best.put(g.vertMap.get(x),  (dsv + edvw));
+                    parentMap.put(x,tempID);
+                    //addPq is the priority distance equals to d(s, v) + ed(v, w) + h(w)
+                    double addPq = dsv + edvw + hw;
+                    pq.add(new locNode(x, addPq, temp));
                         //sol.add(x);
-                    }
                 }
+            }
                 //double dsv = g.distance(startID, tempID);
 
-            }
         }
+
         long tts = endID;
         while(tts != startID) {
             sol.add(0, tts);
             tts = parentMap.get(tts);
-        }
+            }
         sol.add(0, startID);
         return sol;
     }
