@@ -80,6 +80,7 @@ public class Rasterer {
         // using the formula on slides, and 288200 is only for latitude around 38 degrees north
 
         double feetPp = Math.abs(ullon - lrlon) * lonCon / wtemp;
+
         int depthReturn = depthupdate(feetPp);
 
         // calculate the start and end of the grid
@@ -173,19 +174,25 @@ public class Rasterer {
 
     private double[] rasterCal(int depth, int rowStart, int rowEnd, int colStart, int colEnd) {
         double block = Math.pow(2, depth);
-        double lanStep = lanDif / block;
+        System.out.println("block is : " + block);
+        double lanStep = lanDif / block * (-1.0);
+        System.out.println("lanStep is : " + lanStep);
         double lonStep = lonDif / block;
+        System.out.println("lonStep is : " + lonStep);
         double result[] = new double[4];
+
         result[0] = lonStep * rowStart + MapServer.ROOT_ULLON;
         result[1] = lonStep * (rowEnd + 1) + MapServer.ROOT_ULLON;
         result[2] = lanStep * colStart + MapServer.ROOT_ULLAT;
         result[3] = lanStep * (colEnd + 1) + MapServer.ROOT_ULLAT;
+
         return result;
 
 
 
     }
 
+    /*
     public static void main(String[] args) {
         Rasterer out = new Rasterer();
         double w = 892.0;
@@ -201,6 +208,14 @@ public class Rasterer {
 
         String filename = out.picName(3,5,4);
         System.out.println("filename is: " + filename);
-    }
 
+        double sssss[] = new double[4];
+        sssss = out.rasterCal(4, 10,10,4,4);
+        System.out.println(" sssss[0] is " + sssss[0]);
+        System.out.println(" sssss[1] is " + sssss[1]);
+        System.out.println(" sssss[2] is " + sssss[2]);
+        System.out.println(" sssss[3] is " + sssss[3]);
+
+    }
+*/
 }
