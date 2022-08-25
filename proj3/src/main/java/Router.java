@@ -29,42 +29,27 @@ public class Router {
                                           double destlon, double destlat) {
         long startID = g.closest(stlon, stlat);
         long endID = g.closest(destlon, destlat);
-        int startInt = g.vertMap.get(startID);
-        int endInt = g.vertMap.get(endID);
-        double actLon = g.lon(startID);
-        double actLat = g.lat(startID);
-        Map<Integer, Double> best = new HashMap<>(g.vertMap.size());
+        Map<Long, Integer> Mapping = g.vertMap;
+        Map<Integer, Double> best = new HashMap<>(Mapping.size());
         boolean[] marking = new boolean[g.vertMap.size()];
 
         //parentMap is mapping from son to parent
         Map<Long, Long> parentMap = new HashMap<>();
-        /*
 
-        for (int i = 0; i < g.vertMap.size(); i++) {
-            best.put(i, Double.POSITIVE_INFINITY);
-            marking[i] = false;
-        }
-
-         */
-
-
-        //List<Long> sol = new ArrayList<>();
         LinkedList<Long> sol = new LinkedList<>();
-        //ArrayList<Long> sol2 = new ArrayList<>();
-
 
         class locNode implements Comparable<locNode> {
 
             long IDin;
             double priority;
-            locNode parentNode;
 
 
-            public locNode (long ID, double pri, locNode prev) {
+
+            public locNode (long ID, double pri) {
 
                 IDin = ID;
                 priority = pri;
-                parentNode = prev;
+                //parentNode = prev;
             }
 
             @Override
@@ -79,58 +64,46 @@ public class Router {
 
 
         PriorityQueue<locNode> pq = new PriorityQueue<>();
+        pq.add(new locNode(startID, 999999999));
+        best.put(Mapping.get(startID), 0.0);
 
-
-        pq.add(new locNode(startID, 999999999, null));
-        best.put(g.vertMap.get(startID), 0.0);
-        //
-        //sol2.add(startID);
-        //int pointer = 0;
         while (!pq.isEmpty()) {
             locNode temp = pq.poll();
-
-
             long tempID = temp.IDin;
-            if(!Objects.nonNull(marking[g.vertMap.get(tempID)])) {
-                marking[g.vertMap.get(tempID)] = true;
-            } else if(marking[g.vertMap.get(tempID)]){
+            boolean tt = marking[Mapping.get(tempID)];
+            if(!Objects.nonNull(tt)) {
+                marking[Mapping.get(tempID)] = true;
+            } else if(tt) {
                 //sol2.pop();
                 continue;
             }
+
             if(tempID == endID) {
                 //sol2.add(pointer, tempID);
                 break;
             }
-            /*if(sol2.contains(parentMap.get(tempID))) {
-                pointer = sol2.indexOf(parentMap.get(tempID)) + 1;
-                System.out.println("actually in the loop, and the pointer become : " + pointer);
-            }
-            //sol2.add(pointer, tempID);
-            //pointer++;
-             */
-            //marking[g.vertMap.get(startID)] = true;
+
             double dsv;
-            if(!Objects.nonNull(best.get(g.vertMap.get(tempID)))) {
+            if(!Objects.nonNull(best.get(Mapping.get(tempID)))) {
                 dsv = Double.POSITIVE_INFINITY;
             } else{
-                dsv = best.get(g.vertMap.get(tempID));
+                dsv = best.get(Mapping.get(tempID));
             }
 
             //System.out.println("dsv = " + dsv);
             for (long x: g.adjacent(tempID)){
                 double edvw = g.distance(tempID, x);
                 double hw = g.distance(x, endID);
-                if (!Objects.nonNull(best.get(g.vertMap.get(x))) || (dsv + edvw) <= best.get(g.vertMap.get(x))) {
-                    best.put(g.vertMap.get(x),  (dsv + edvw));
+                Double t = best.get(Mapping.get(x));
+                if (!Objects.nonNull(t)|| (dsv + edvw) <= t) {
+                    best.put(Mapping.get(x),  (dsv + edvw));
                     parentMap.put(x,tempID);
-                    double addPq = dsv + edvw + hw;
-                    pq.add(new locNode(x, addPq, temp));
+                    pq.add(new locNode(x, dsv + edvw + hw));
                 }
             }
                 //double dsv = g.distance(startID, tempID);
 
         }
-
         long tts = endID;
         while(tts != startID) {
             sol.addFirst(tts);
