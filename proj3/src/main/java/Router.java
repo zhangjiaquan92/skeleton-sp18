@@ -85,9 +85,16 @@ public class Router {
 
             double dsv;
             if(!Objects.nonNull(best.get(Mapping.get(tempID)))) {
-                dsv = Double.POSITIVE_INFINITY;
+                //dsv = Double.POSITIVE_INFINITY;
+                if (tempID == startID || parentMap.get(tempID) == startID) {
+                    dsv = 0;
+                } else {
+                    dsv = best.get(Mapping.get((tempID)));
+                }
+                //dsv = g.distance(startID, tempID);
             } else{
-                dsv = best.get(Mapping.get(tempID));
+                dsv = best.get(Mapping.get((tempID)));
+
             }
 
             //System.out.println("dsv = " + dsv);
