@@ -92,7 +92,7 @@ public class Router {
 
             long tempID = temp.IDin;
             if(!Objects.nonNull(marking[g.vertMap.get(tempID)])) {
-                marking[g.vertMap.get(tempID)] = false;
+                marking[g.vertMap.get(tempID)] = true;
             } else if(marking[g.vertMap.get(tempID)]){
                 //sol2.pop();
                 continue;
@@ -108,7 +108,7 @@ public class Router {
             //sol2.add(pointer, tempID);
             //pointer++;
              */
-            marking[g.vertMap.get(startID)] = true;
+            //marking[g.vertMap.get(startID)] = true;
             double dsv;
             if(!Objects.nonNull(best.get(g.vertMap.get(tempID)))) {
                 dsv = Double.POSITIVE_INFINITY;
