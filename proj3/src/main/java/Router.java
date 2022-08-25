@@ -24,6 +24,7 @@ public class Router {
      * @param destlat The latitude of the destination location.
      * @return A list of node id's in the order visited on the shortest path.
      */
+
     public static List<Long> shortestPath(GraphDB g, double stlon, double stlat,
                                           double destlon, double destlat) {
         long startID = g.closest(stlon, stlat);
@@ -37,12 +38,19 @@ public class Router {
 
         //parentMap is mapping from son to parent
         Map<Long, Long> parentMap = new HashMap<>();
+        /*
+
         for (int i = 0; i < g.vertMap.size(); i++) {
-            best.put(i, 999999999.9);
+            best.put(i, Double.POSITIVE_INFINITY);
             marking[i] = false;
         }
+
+         */
+
+
         List<Long> sol = new ArrayList<>();
-        //Stack<Long> sol2 = new Stack<>();
+        //ArrayList<Long> sol2 = new ArrayList<>();
+
 
         class locNode implements Comparable<locNode> {
 
@@ -67,35 +75,56 @@ public class Router {
             }
         }
 
+
+
         PriorityQueue<locNode> pq = new PriorityQueue<>();
 
 
         pq.add(new locNode(startID, 999999999, null));
         best.put(g.vertMap.get(startID), 0.0);
         //
-        //sol2.push(startID);
+        //sol2.add(startID);
         //int pointer = 0;
         while (!pq.isEmpty()) {
             locNode temp = pq.poll();
 
 
             long tempID = temp.IDin;
-            //sol2.push(tempID);
-            if(marking[g.vertMap.get(tempID)]){
+            if(!Objects.nonNull(marking[g.vertMap.get(tempID)])) {
+                marking[g.vertMap.get(tempID)] = false;
+            } else if(marking[g.vertMap.get(tempID)]){
                 //sol2.pop();
                 continue;
             }
-            if (tempID == endID) {
-                //sol.push(tempID);
+            if(tempID == endID) {
+                //sol2.add(pointer, tempID);
                 break;
             }
+            /*if(sol2.contains(parentMap.get(tempID))) {
+                pointer = sol2.indexOf(parentMap.get(tempID)) + 1;
+                System.out.println("actually in the loop, and the pointer become : " + pointer);
+            }
+            //sol2.add(pointer, tempID);
+            //pointer++;
+             */
             marking[g.vertMap.get(startID)] = true;
-            double dsv = best.get(g.vertMap.get(tempID));
+            double dsv;
+            if(!Objects.nonNull(best.get(g.vertMap.get(tempID)))) {
+                dsv = Double.POSITIVE_INFINITY;
+            } else{
+                dsv = best.get(g.vertMap.get(tempID));
+            }
+
             //System.out.println("dsv = " + dsv);
             for (long x: g.adjacent(tempID)){
                 double edvw = g.distance(tempID, x);
                 double hw = g.distance(x, endID);
-                if((dsv + edvw) <= best.get(g.vertMap.get(x))) {
+                if (!Objects.nonNull(best.get(g.vertMap.get(x)))) {
+                    best.put(g.vertMap.get(x),  (dsv + edvw));
+                    parentMap.put(x,tempID);
+                    double addPq = dsv + edvw + hw;
+                    pq.add(new locNode(x, addPq, temp));
+                }else if((dsv + edvw) <= best.get(g.vertMap.get(x))) {
                     best.put(g.vertMap.get(x),  (dsv + edvw));
                     parentMap.put(x,tempID);
                     //addPq is the priority distance equals to d(s, v) + ed(v, w) + h(w)
@@ -115,6 +144,8 @@ public class Router {
             tts = parentMap.get(tts);
             }
         sol.add(0, startID);
+        //System.out.println("Pointer is : " + pointer);
+
         return sol;
     }
 
