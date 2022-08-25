@@ -48,7 +48,8 @@ public class Router {
          */
 
 
-        List<Long> sol = new ArrayList<>();
+        //List<Long> sol = new ArrayList<>();
+        LinkedList<Long> sol = new LinkedList<>();
         //ArrayList<Long> sol2 = new ArrayList<>();
 
 
@@ -119,19 +120,11 @@ public class Router {
             for (long x: g.adjacent(tempID)){
                 double edvw = g.distance(tempID, x);
                 double hw = g.distance(x, endID);
-                if (!Objects.nonNull(best.get(g.vertMap.get(x)))) {
+                if (!Objects.nonNull(best.get(g.vertMap.get(x))) || (dsv + edvw) <= best.get(g.vertMap.get(x))) {
                     best.put(g.vertMap.get(x),  (dsv + edvw));
                     parentMap.put(x,tempID);
                     double addPq = dsv + edvw + hw;
                     pq.add(new locNode(x, addPq, temp));
-                }else if((dsv + edvw) <= best.get(g.vertMap.get(x))) {
-                    best.put(g.vertMap.get(x),  (dsv + edvw));
-                    parentMap.put(x,tempID);
-                    //addPq is the priority distance equals to d(s, v) + ed(v, w) + h(w)
-                    //sol2.push(x);
-                    double addPq = dsv + edvw + hw;
-                    pq.add(new locNode(x, addPq, temp));
-                        //sol.add(x);
                 }
             }
                 //double dsv = g.distance(startID, tempID);
@@ -140,10 +133,10 @@ public class Router {
 
         long tts = endID;
         while(tts != startID) {
-            sol.add(0, tts);
+            sol.addFirst(tts);
             tts = parentMap.get(tts);
             }
-        sol.add(0, startID);
+        sol.addFirst(startID);
         //System.out.println("Pointer is : " + pointer);
 
         return sol;
