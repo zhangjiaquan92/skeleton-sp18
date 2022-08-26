@@ -89,7 +89,7 @@ public class Router {
                 if (tempID == startID || parentMap.get(tempID) == startID) {
                     dsv = 0;
                 } else {
-                    dsv = best.get(Mapping.get((tempID)));
+                    dsv = best.get(Mapping.get(parentMap.get(tempID)));
                 }
                 //dsv = g.distance(startID, tempID);
             } else{

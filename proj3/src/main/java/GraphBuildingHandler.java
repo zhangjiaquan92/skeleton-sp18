@@ -42,6 +42,7 @@ public class GraphBuildingHandler extends DefaultHandler {
     // mapping integer to the lat and lon of the location
     //private Map<Integer, Double[]> latlonMap = new HashMap<>();
     //List<Long>[] adj;
+
     private int nodeCount = 0;
     private long wayCur = -1;
     private Stack<long[]> wayPair = new Stack<>();
@@ -196,6 +197,32 @@ public class GraphBuildingHandler extends DefaultHandler {
                     long[] out = wayPair.pop();
                     long friendOne = out[0];
                     long friendTwo = out[1];
+                    double friend1lon = g.lon(friendOne);
+                    double friend1lat = g.lat(friendOne);
+                    double friend2lon = g.lon(friendTwo);
+                    double friend2lat = g.lat(friendTwo);
+                    Integer group1 = g.groupHelper(friend1lon, friend1lat);
+                    Integer group2 = g.groupHelper(friend2lon, friend2lat);
+                    if(g.closeMap.containsKey(group1)) {
+                        ArrayList<Long> temp = g.closeMap.get(group1);
+                        temp.add(friendOne);
+                        g.closeMap.replace(group1, temp);
+                    } else {
+                        ArrayList<Long> ttt = new ArrayList<>();
+                        ttt.add(friendOne);
+                        g.closeMap.put(group1,ttt);
+                    }
+                    if(g.closeMap.containsKey(group2)) {
+                        ArrayList<Long> temp2 = g.closeMap.get(group2);
+                        temp2.add(friendTwo);
+                        g.closeMap.replace(group2, temp2);
+                    } else {
+                        ArrayList<Long> ttt2 = new ArrayList<>();
+                        ttt2.add(friendTwo);
+                        g.closeMap.put(group2,ttt2);
+                    }
+
+
                     //System.out.println("friendOne is :" + friendOne);
                     //System.out.println("friendTwo is :" + friendTwo);
                     int friend1Map = g.vertMap.get(friendOne);
@@ -217,5 +244,7 @@ public class GraphBuildingHandler extends DefaultHandler {
             //System.out.println("nodecount is :" + nodeCount);
         }
     }
+
+
 
 }

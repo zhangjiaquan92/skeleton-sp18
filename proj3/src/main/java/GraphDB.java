@@ -33,10 +33,14 @@ public class GraphDB {
     Map<Long, Integer> vertMap = new HashMap<>();
     // mapping integer to the lat and lon of the location
     Map<Integer, double[]> latlonMap = new HashMap<>();
+    Map<Integer, ArrayList<Long>> closeMap = new HashMap<>();
 
     List<Long> verti = new ArrayList<>();
 
     List<Long>[] adj;
+
+    double lonDif = MapServer.ROOT_LRLON - MapServer.ROOT_ULLON;
+    double latDif = MapServer.ROOT_ULLAT - MapServer.ROOT_LRLAT;
 
     public GraphDB(String dbPath) {
         try {
@@ -167,7 +171,7 @@ public class GraphDB {
      * @return The id of the node in the graph closest to the target.
      */
     long closest(double lon, double lat) {
-        double saveDist = -1;
+        /*double saveDist = -1;
         long saveID = 0;
         for (int i = 0; i < verti.size(); i++) {
             long temp = verti.get(i);
@@ -185,8 +189,72 @@ public class GraphDB {
                 saveID = temp;
             }
         }
+        System.out.println("in the closest loop");
         return saveID;
+
+         */
+        //System.out.println("inside the loop test.");
+        double saveDist = -1;
+        long saveID = 0;
+        Integer tts = groupHelper(lon, lat);
+        //System.out.println("array asdfasdfasdf size is : " + tts);
+
+        //ArrayList<Long> tmep = closeMap.get(tts);
+        //System.out.println("array asdfasdfasdf size is : " + closeMap.get(tts).isEmpty());
+        for(long i : closeMap.get(tts)) {
+            double dist = distance(lon, lat, this.lon(i), this.lat(i));
+            if (dist == 0) {
+                return i;
+            }
+            if (saveDist == -1) {
+                saveDist = dist;
+                saveID = i;
+            } else if (saveDist > dist) {
+                saveDist = dist;
+                saveID = i;
+            }
+        }
+
+        return saveID;
+
+
     }
+    Integer groupHelper(double lon, double lat) {
+
+        double block = Math.pow(2, 1);
+
+        //System.out.println("block is :" + block);
+        double blockSize = lonDif / block;
+        //System.out.println("blocksize is :" + blockSize);
+        Integer result = (int) Math.floor(Math.abs(lon - MapServer.ROOT_ULLON) / blockSize);
+        //System.out.println("result is :" + result);
+        if(result >= block) {
+            result = (int)block - 1;
+        }
+
+        double block2 = Math.pow(2, 1);
+        double blockSize2 = latDif / block2;
+        Integer result2 = (int) Math.floor(Math.abs(lat - MapServer.ROOT_ULLAT) / blockSize2);
+        if(result2 >= block2) {
+            result2 = (int)block2 - 1;
+        }
+        int depth = 4;
+        Integer[] tempo = {result, result2};
+        return arrayToint(tempo, depth);
+        //System.out.println("tempo [0] is : " + tempo[0]);
+        //System.out.println("tempo [1] is : " + tempo[1]);
+        //return tempo;
+    }
+
+    private Integer arrayToint(Integer[] array, int depth) {
+        double size = Math.pow(2, depth);
+        int row = array[0];
+        int col = array[1];
+        return ((row - 1) * (int) size + col);
+
+    }
+
+
 
     /**
      * Gets the longitude of a vertex.
