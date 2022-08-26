@@ -220,37 +220,37 @@ public class GraphDB {
 
     }
     Integer groupHelper(double lon, double lat) {
+        int depth = 1;
 
-        double block = Math.pow(2, 1);
+        double block = Math.pow(2, depth);
 
-        //System.out.println("block is :" + block);
+
+        //System.out.println("Lon is : " + lon);
+        //System.out.println("Lat is : " + lat);
         double blockSize = lonDif / block;
         //System.out.println("blocksize is :" + blockSize);
-        Integer result = (int) Math.floor(Math.abs(lon - MapServer.ROOT_ULLON) / blockSize);
+        Integer col = (int) Math.floor(Math.abs(lon - MapServer.ROOT_ULLON) / blockSize);
         //System.out.println("result is :" + result);
-        if(result >= block) {
-            result = (int)block - 1;
-        }
 
-        double block2 = Math.pow(2, 1);
-        double blockSize2 = latDif / block2;
-        Integer result2 = (int) Math.floor(Math.abs(lat - MapServer.ROOT_ULLAT) / blockSize2);
-        if(result2 >= block2) {
-            result2 = (int)block2 - 1;
-        }
-        int depth = 4;
-        Integer[] tempo = {result, result2};
-        return arrayToint(tempo, depth);
+
+        //double block2 = Math.pow(2, depth);
+        double blockSize2 = latDif / block;
+        Integer row = (int) Math.floor(Math.abs(lat - MapServer.ROOT_ULLAT) / blockSize2);
+        //System.out.println("row is : " + row);
+        //System.out.println("col is : " + col);
+
+        Integer[] tempo = {row, col};
+        return arrayToint(tempo, block);
         //System.out.println("tempo [0] is : " + tempo[0]);
         //System.out.println("tempo [1] is : " + tempo[1]);
         //return tempo;
     }
 
-    private Integer arrayToint(Integer[] array, int depth) {
-        double size = Math.pow(2, depth);
+    private Integer arrayToint(Integer[] array, double size) {
+        //double size = Math.pow(2, depth);
         int row = array[0];
         int col = array[1];
-        return ((row - 1) * (int) size + col);
+        return ((row) * (int) size + col + 1);
 
     }
 
