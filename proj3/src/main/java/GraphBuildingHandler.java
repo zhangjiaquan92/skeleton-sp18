@@ -83,13 +83,16 @@ public class GraphBuildingHandler extends DefaultHandler {
             g.vertMap.put(vertLong, nodeCount);
             String tempLon = attributes.getValue("lon");
             String tempLat = attributes.getValue("lat");
-            double[] array = new double[]{Double.parseDouble(tempLon), Double.parseDouble(tempLat)};
+            double Dlon = Double.parseDouble(tempLon);
+            double Dlat = Double.parseDouble(tempLat);
+            double[] array = new double[]{Dlon, Dlat};
 
             g.latlonMap.put(nodeCount, array);
             //long vertLong = Long.parseLong(vertID);
             g.verti.add(vertLong);
 
             nodeCount++;
+
 
 
 
@@ -197,6 +200,7 @@ public class GraphBuildingHandler extends DefaultHandler {
                     long[] out = wayPair.pop();
                     long friendOne = out[0];
                     long friendTwo = out[1];
+
                     double friend1lon = g.lon(friendOne);
                     double friend1lat = g.lat(friendOne);
                     double friend2lon = g.lon(friendTwo);
@@ -221,6 +225,8 @@ public class GraphBuildingHandler extends DefaultHandler {
                         ttt2.add(friendTwo);
                         g.closeMap.put(group2,ttt2);
                     }
+
+
 
 
                     //System.out.println("friendOne is :" + friendOne);

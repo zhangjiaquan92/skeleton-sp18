@@ -38,6 +38,8 @@ public class GraphDB {
     List<Long> verti = new ArrayList<>();
 
     List<Long>[] adj;
+    private int depth = 3;
+    private double block = Math.pow(2, depth);
 
     double lonDif = MapServer.ROOT_LRLON - MapServer.ROOT_ULLON;
     double latDif = MapServer.ROOT_ULLAT - MapServer.ROOT_LRLAT;
@@ -194,36 +196,41 @@ public class GraphDB {
 
          */
         //System.out.println("inside the loop test.");
+        //System.out.println("in the closest loop");
+        //System.out.println("lon is : " + lon);
+        //System.out.println("lat is : " + lat);
         double saveDist = -1;
         long saveID = 0;
         Integer tts = groupHelper(lon, lat);
+        Integer[] nineOut = nineBlock(tts);
+        //System.out.println("group # is : " + tts);
         //System.out.println("array asdfasdfasdf size is : " + tts);
 
         //ArrayList<Long> tmep = closeMap.get(tts);
         //System.out.println("array asdfasdfasdf size is : " + closeMap.get(tts).isEmpty());
-        for(long i : closeMap.get(tts)) {
-            double dist = distance(lon, lat, this.lon(i), this.lat(i));
-            if (dist == 0) {
-                return i;
-            }
-            if (saveDist == -1) {
-                saveDist = dist;
-                saveID = i;
-            } else if (saveDist > dist) {
-                saveDist = dist;
-                saveID = i;
+        for(int j : nineOut) {
+            ArrayList<Long> tmep = closeMap.get(j);
+            for(long i : tmep) {
+                double dist = distance(lon, lat, this.lon(i), this.lat(i));
+                if (dist == 0) {
+                    return i;
+                }
+                if (saveDist == -1) {
+                    saveDist = dist;
+                    saveID = i;
+                } else if (saveDist > dist) {
+                    saveDist = dist;
+                    saveID = i;
+                }
             }
         }
+
 
         return saveID;
 
 
     }
     Integer groupHelper(double lon, double lat) {
-        int depth = 1;
-
-        double block = Math.pow(2, depth);
-
 
         //System.out.println("Lon is : " + lon);
         //System.out.println("Lat is : " + lat);
@@ -239,19 +246,84 @@ public class GraphDB {
         //System.out.println("row is : " + row);
         //System.out.println("col is : " + col);
 
-        Integer[] tempo = {row, col};
-        return arrayToint(tempo, block);
+        //Integer[] tempo = {row, col};
+        int loc = arrayToint(row, col, block);
+
+        return loc;
+
         //System.out.println("tempo [0] is : " + tempo[0]);
         //System.out.println("tempo [1] is : " + tempo[1]);
         //return tempo;
     }
+    //private Integer[] nineOut (int loc)
 
-    private Integer arrayToint(Integer[] array, double size) {
+    private Integer arrayToint(Integer row, Integer col, double size) {
         //double size = Math.pow(2, depth);
-        int row = array[0];
-        int col = array[1];
         return ((row) * (int) size + col + 1);
 
+    }
+
+    private Integer[] nineBlock (Integer loc) {
+         ArrayList<Integer> temp = new ArrayList<>();
+         temp.add(loc);
+        if(loc > block && loc <= (block - 1) * block) {
+            temp.add(loc - (int)block);
+            temp.add(loc + (int)block);
+            if (loc % (int)block != 1 && loc % (int)block != 0) {
+                temp.add(loc - 1);
+                temp.add(loc + 1);
+                temp.add(loc + (int)block + 1);
+                temp.add(loc + (int)block - 1);
+                temp.add(loc - (int)block + 1);
+                temp.add(loc - (int)block - 1);
+            } else if(loc % (int)block == 1) {
+                //location is on the left edge, so we can't count block on the left of  9 blocks
+                temp.add(loc + 1);
+                temp.add(loc + (int)block + 1);
+                temp.add(loc - (int)block + 1);
+            }else if(loc % (int)block == 0) {
+                temp.add(loc - 1);
+                temp.add(loc + (int)block - 1);
+                temp.add(loc - (int)block - 1);
+            }
+
+
+
+        }else if(loc <= block) {
+            temp.add(loc + (int)block);
+            if(loc % (int)block != 1 && loc % (int)block != 0) {
+                temp.add(loc + (int)block + 1);
+                temp.add(loc + (int)block - 1);
+                temp.add(loc + 1);
+                temp.add(loc - 1);
+            }else if(loc % (int)block == 1) {
+                temp.add(loc + (int)block + 1);
+                temp.add(loc + 1);
+            }else if(loc % (int)block == 0) {
+                temp.add(loc + (int)block - 1);
+                temp.add(loc -1);
+            }
+
+
+        }else if(loc > (block - 1) * block) {
+            temp.add(loc - (int)block);
+            if(loc % (int)block != 1 && loc % (int)block != 0) {
+                temp.add(loc - (int)block + 1);
+                temp.add(loc - (int)block - 1);
+                temp.add(loc + 1);
+                temp.add(loc -1);
+            }else if(loc % (int)block == 1) {
+                temp.add(loc - (int)block + 1);
+                temp.add(loc + 1);
+            }else if(loc % (int)block == 0) {
+                temp.add(loc - (int)block - 1);
+                temp.add(loc - 1);
+            }
+        }
+        Integer[] arr = new Integer[temp.size()];
+        arr = temp.toArray(arr);
+
+        return arr;
     }
 
 
@@ -280,5 +352,12 @@ public class GraphDB {
         double[] lonLat = latlonMap.get(vert);
         return lonLat[1];
     }
+/*public static void main(String[] args) {
+    GraphDB p = new GraphDB(null);
+    Integer[] ss = {1,1};
+    Integer out = p.arrayToint(ss, 2);
+    System.out.println("output of arrayToint is : " + out);
+}
 
+ */
 }
