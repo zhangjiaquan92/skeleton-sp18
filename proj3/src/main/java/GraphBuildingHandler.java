@@ -189,12 +189,25 @@ public class GraphBuildingHandler extends DefaultHandler {
             if(!adjCheck) {
                 g.adj = new ArrayList[nodeCount];
                 //System.out.println("size of adj is :" + adj.length);
-                for (int v = 0; v < nodeCount; v++) {
+                /*for (int v = 0; v < nodeCount; v++) {
                     g.adj[v] = new ArrayList<Long>();
 
                 }
+
+                 */
+
+
+
+
+
+
                 adjCheck = true;
             }
+
+
+
+
+
             if(saveCheck) {
                 while(!wayPair.empty()) {
                     long[] out = wayPair.pop();
@@ -233,8 +246,22 @@ public class GraphBuildingHandler extends DefaultHandler {
                     //System.out.println("friendTwo is :" + friendTwo);
                     int friend1Map = g.vertMap.get(friendOne);
                     int friend2Map = g.vertMap.get(friendTwo);
+                    if(Objects.isNull(g.adj[friend2Map])){
+                        g.adj[friend2Map] = new ArrayList<Long>();
+                    }
+                    if(Objects.isNull(g.adj[friend1Map])){
+                        g.adj[friend1Map] = new ArrayList<Long>();
+                    }
+
                     g.adj[friend1Map].add(friendTwo);
                     g.adj[friend2Map].add(friendOne);
+                    //ArrayList<Long> temp1 = g.adj.get(friend1Map);
+                    //ArrayList<Long> temp2 = g.adj.get(friend2Map);
+                    //temp1.add(friendTwo);
+                    //temp2.add(friendOne);
+                    //g.adj.set(friend1Map, temp1);
+                    //g.adj.set(friend2Map, temp2);
+
 
 
 

@@ -6,10 +6,7 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Graph for storing all of the intersection (vertex) and road (edge) information.
@@ -38,6 +35,8 @@ public class GraphDB {
     List<Long> verti = new ArrayList<>();
 
     List<Long>[] adj;
+    //List<ArrayList<Long>> adj;
+
     private int depth = 3;
     private double block = Math.pow(2, depth);
 
@@ -78,9 +77,15 @@ public class GraphDB {
     private void clean() {
 
         for(int i = 0; i < adj.length; i++) {
-            if(adj[i].isEmpty()) {
+            /*if(adj[i].isEmpty()) {
                 verti.set(i, -3L);
             }
+
+             */
+            if(Objects.isNull(adj[i])) {
+                verti.set(i, -3L);
+            }
+
         }
 
         //reference the removeAll method example from
@@ -112,6 +117,7 @@ public class GraphDB {
     Iterable<Long> adjacent(long v) {
         int vert = vertMap.get(v);
         List<Long> adjList = adj[vert];
+        //List<Long> adjList = adj.get(vert);
         return adjList;
     }
 
