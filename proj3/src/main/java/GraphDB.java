@@ -37,7 +37,7 @@ public class GraphDB {
     List<Long>[] adj;
     //List<ArrayList<Long>> adj;
 
-    private int depth = 3;
+    private int depth = 4;
     private double block = Math.pow(2, depth);
 
     double lonDif = MapServer.ROOT_LRLON - MapServer.ROOT_ULLON;
