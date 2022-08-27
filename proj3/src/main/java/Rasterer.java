@@ -174,11 +174,11 @@ public class Rasterer {
 
     private double[] rasterCal(int depth, int rowStart, int rowEnd, int colStart, int colEnd) {
         double block = Math.pow(2, depth);
-        System.out.println("block is : " + block);
+        //System.out.println("block is : " + block);
         double lanStep = lanDif / block * (-1.0);
-        System.out.println("lanStep is : " + lanStep);
+        //System.out.println("lanStep is : " + lanStep);
         double lonStep = lonDif / block;
-        System.out.println("lonStep is : " + lonStep);
+        //System.out.println("lonStep is : " + lonStep);
         double result[] = new double[4];
 
         result[0] = lonStep * rowStart + MapServer.ROOT_ULLON;

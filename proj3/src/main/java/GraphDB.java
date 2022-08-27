@@ -37,7 +37,7 @@ public class GraphDB {
     List<Long>[] adj;
     //List<ArrayList<Long>> adj;
 
-    private int depth = 4;
+    private int depth = 3;
     private double block = Math.pow(2, depth);
 
     double lonDif = MapServer.ROOT_LRLON - MapServer.ROOT_ULLON;
@@ -179,8 +179,9 @@ public class GraphDB {
      * @return The id of the node in the graph closest to the target.
      */
     long closest(double lon, double lat) {
-        /*double saveDist = -1;
+        double saveDist = -1;
         long saveID = 0;
+
         for (int i = 0; i < verti.size(); i++) {
             long temp = verti.get(i);
             int id = vertMap.get(temp);
@@ -197,23 +198,28 @@ public class GraphDB {
                 saveID = temp;
             }
         }
-        System.out.println("in the closest loop");
-        return saveID;
+        //System.out.println("in the closest loop");
 
-         */
+
+        return saveID;
+    }
+        /*
+
+
         //System.out.println("inside the loop test.");
         //System.out.println("in the closest loop");
         //System.out.println("lon is : " + lon);
         //System.out.println("lat is : " + lat);
-        double saveDist = -1;
-        long saveID = 0;
-        Integer tts = groupHelper(lon, lat);
-        Integer[] nineOut = nineBlock(tts);
+        //double saveDist = -1;
+        //long saveID = 0;
+        //Integer tts = groupHelper(lon, lat);
+        //Integer[] nineOut = nineBlock(tts);
         //System.out.println("group # is : " + tts);
         //System.out.println("array asdfasdfasdf size is : " + tts);
 
         //ArrayList<Long> tmep = closeMap.get(tts);
         //System.out.println("array asdfasdfasdf size is : " + closeMap.get(tts).isEmpty());
+
         for(int j : nineOut) {
             ArrayList<Long> tmep = closeMap.get(j);
             for(long i : tmep) {
@@ -236,6 +242,8 @@ public class GraphDB {
 
 
     }
+
+
     Integer groupHelper(double lon, double lat) {
 
         //System.out.println("Lon is : " + lon);
@@ -332,6 +340,17 @@ public class GraphDB {
         return arr;
     }
 
+         */
+
+
+
+
+
+
+
+
+
+
 
 
     /**
@@ -358,12 +377,7 @@ public class GraphDB {
         double[] lonLat = latlonMap.get(vert);
         return lonLat[1];
     }
-/*public static void main(String[] args) {
-    GraphDB p = new GraphDB(null);
-    Integer[] ss = {1,1};
-    Integer out = p.arrayToint(ss, 2);
-    System.out.println("output of arrayToint is : " + out);
-}
 
- */
+
+
 }
