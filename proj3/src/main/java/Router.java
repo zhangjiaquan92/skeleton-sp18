@@ -66,8 +66,9 @@ public class Router {
         PriorityQueue<locNode> pq = new PriorityQueue<>();
         pq.add(new locNode(startID, 999999999));
         best.put(Mapping.get(startID), 0.0);
+        boolean targetFound = false;
 
-        while (!pq.isEmpty()) {
+        while (!pq.isEmpty() && !targetFound) {
             locNode temp = pq.poll();
             long tempID = temp.IDin;
             boolean tt = marking[Mapping.get(tempID)];
@@ -80,29 +81,18 @@ public class Router {
 
             if(tempID == endID) {
                 //sol2.add(pointer, tempID);
+                targetFound = true;
                 break;
             }
 
-            double dsv;
-            if(!Objects.nonNull(best.get(Mapping.get(tempID)))) {
-                //dsv = Double.POSITIVE_INFINITY;
-                if (tempID == startID || parentMap.get(tempID) == startID) {
-                    dsv = 0;
-                } else {
-                    dsv = best.get(Mapping.get(parentMap.get(tempID)));
-                }
-                //dsv = g.distance(startID, tempID);
-            } else{
-                dsv = best.get(Mapping.get((tempID)));
-
-            }
+            double dsv = best.get(Mapping.get((tempID)));
 
             //System.out.println("dsv = " + dsv);
             for (long x: g.adjacent(tempID)){
                 double edvw = g.distance(tempID, x);
                 double hw = g.distance(x, endID);
                 Double t = best.get(Mapping.get(x));
-                if (!Objects.nonNull(t)|| (dsv + edvw) <= t) {
+                if (!Objects.nonNull(t) || (dsv + edvw) <= t) {
                     best.put(Mapping.get(x),  (dsv + edvw));
                     parentMap.put(x,tempID);
                     pq.add(new locNode(x, dsv + edvw + hw));

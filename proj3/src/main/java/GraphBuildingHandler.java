@@ -218,7 +218,7 @@ public class GraphBuildingHandler extends DefaultHandler {
                     double friend1lat = g.lat(friendOne);
                     double friend2lon = g.lon(friendTwo);
                     double friend2lat = g.lat(friendTwo);
-                    /*
+
                     Integer group1 = g.groupHelper(friend1lon, friend1lat);
                     Integer group2 = g.groupHelper(friend2lon, friend2lat);
                     if(g.closeMap.containsKey(group1)) {
@@ -240,7 +240,7 @@ public class GraphBuildingHandler extends DefaultHandler {
                         g.closeMap.put(group2,ttt2);
                     }
 
-                     */
+
 
 
 

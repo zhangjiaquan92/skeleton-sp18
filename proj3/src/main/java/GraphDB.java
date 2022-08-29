@@ -179,6 +179,7 @@ public class GraphDB {
      * @return The id of the node in the graph closest to the target.
      */
     long closest(double lon, double lat) {
+        /*
         double saveDist = -1;
         long saveID = 0;
 
@@ -203,17 +204,27 @@ public class GraphDB {
 
         return saveID;
     }
-        /*
+
+         */
+
 
 
         //System.out.println("inside the loop test.");
         //System.out.println("in the closest loop");
         //System.out.println("lon is : " + lon);
         //System.out.println("lat is : " + lat);
-        //double saveDist = -1;
-        //long saveID = 0;
-        //Integer tts = groupHelper(lon, lat);
-        //Integer[] nineOut = nineBlock(tts);
+        double saveDist = -1;
+        long saveID = 0;
+        Integer tts = groupHelper(lon, lat);
+        //System.out.println("tts is : " + tts );
+        //Integer[] blkN = getLoc(lon, lat);
+        //int row = blkN[0];
+        //int col = blkN[1];
+        //System.out.println("row, is "+ row);
+        //System.out.println("col, is "+ col);
+        //Integer[] fourOut = fourBlock(row, col, lon, lat, tts);
+        //System.out.println("Integer[] fourOut is " + fourOut[0] + ", " + fourOut[1] +", "+fourOut[2]+", "+fourOut[3] );
+        Integer[] nineOut = nineBlock(tts);
         //System.out.println("group # is : " + tts);
         //System.out.println("array asdfasdfasdf size is : " + tts);
 
@@ -221,6 +232,8 @@ public class GraphDB {
         //System.out.println("array asdfasdfasdf size is : " + closeMap.get(tts).isEmpty());
 
         for(int j : nineOut) {
+        //for(int j : fourOut) {
+
             ArrayList<Long> tmep = closeMap.get(j);
             for(long i : tmep) {
                 double dist = distance(lon, lat, this.lon(i), this.lat(i));
@@ -268,6 +281,13 @@ public class GraphDB {
         //System.out.println("tempo [0] is : " + tempo[0]);
         //System.out.println("tempo [1] is : " + tempo[1]);
         //return tempo;
+    }
+    private Integer[] getLoc(double lon, double lat) {
+        double blockSize = lonDif / block;
+        Integer col = (int) Math.floor(Math.abs(lon - MapServer.ROOT_ULLON) / blockSize);
+        double blockSize2 = latDif / block;
+        Integer row = (int) Math.floor(Math.abs(lat - MapServer.ROOT_ULLAT) / blockSize2);
+        return (new Integer[] {row, col});
     }
     //private Integer[] nineOut (int loc)
 
@@ -340,7 +360,163 @@ public class GraphDB {
         return arr;
     }
 
-         */
+    /*private Integer[] fourBlock (Integer row, Integer col, double lon, double lat, Integer loc) {
+        double[] center = getCenter(row, col, block);
+        ArrayList<Integer> temp = new ArrayList<>();
+        temp.add(loc);
+        //center[0] is lon, center[1] is lat
+        if(col == block) {
+            if(row == 0) {
+                temp.add(loc - 1);
+                temp.add(loc + (int)block);
+                temp.add(loc + (int)block - 1);
+                Integer[] arr = new Integer[temp.size()];
+                arr = temp.toArray(arr);
+                return arr;
+            }else if(row == block - 1) {
+                temp.add(loc - (int)block - 1);
+                temp.add(loc - (int)block);
+                temp.add(loc - 1);
+                Integer[] arr = new Integer[temp.size()];
+                arr = temp.toArray(arr);
+                return arr;
+            } else {
+                if (lat > center[1]) {
+                    temp.add(loc - (int)block);
+                    temp.add(loc - 1);
+                    temp.add(loc - (int)block - 1);
+                    Integer[] arr = new Integer[temp.size()];
+                    arr = temp.toArray(arr);
+                    return arr;
+                }else {
+                    temp.add(loc + (int)block);
+                    temp.add(loc - 1);
+                    temp.add(loc + (int)block - 1);
+                    Integer[] arr = new Integer[temp.size()];
+                    arr = temp.toArray(arr);
+                    return arr;
+                }
+            }
+        }else if (col == 0) {
+            if(row == 0) {
+                temp.add(loc + 1);
+                temp.add(loc + (int)block);
+                temp.add(loc + (int)block + 1);
+                Integer[] arr = new Integer[temp.size()];
+                arr = temp.toArray(arr);
+                return arr;
+            }else if(row == block - 1) {
+                temp.add(loc - (int)block + 1);
+                temp.add(loc - (int)block);
+                temp.add(loc + 1);
+                Integer[] arr = new Integer[temp.size()];
+                arr = temp.toArray(arr);
+                return arr;
+            } else {
+                if (lat > center[1]) {
+                    temp.add(loc - (int) block);
+                    temp.add(loc + 1);
+                    temp.add(loc - (int) block + 1);
+                    Integer[] arr = new Integer[temp.size()];
+                    arr = temp.toArray(arr);
+                    return arr;
+                } else {
+                    temp.add(loc + (int) block);
+                    temp.add(loc + 1);
+                    temp.add(loc + (int) block + 1);
+                    Integer[] arr = new Integer[temp.size()];
+                    arr = temp.toArray(arr);
+                    return arr;
+                }
+            }
+
+        } else {
+            if(row == 0) {
+                if(lon > center[0]) {
+                    temp.add(loc + 1);
+                    temp.add(loc + (int)block);
+                    temp.add(loc + 1 + (int)block);
+                    Integer[] arr = new Integer[temp.size()];
+                    arr = temp.toArray(arr);
+                    return arr;
+                }else{
+                    temp.add(loc - 1);
+                    temp.add(loc + (int)block);
+                    temp.add(loc - 1+ (int)block);
+                    Integer[] arr = new Integer[temp.size()];
+                    arr = temp.toArray(arr);
+                    return arr;
+                }
+            } else if(row == block - 1){
+                if(lon > center[0]) {
+                    temp.add(loc + 1);
+                    temp.add(loc - (int)block);
+                    temp.add(loc + 1 - (int)block);
+                    Integer[] arr = new Integer[temp.size()];
+                    arr = temp.toArray(arr);
+                    return arr;
+                }else{
+                    temp.add(loc - 1);
+                    temp.add(loc - (int)block);
+                    temp.add(loc - 1 - (int)block);
+                    Integer[] arr = new Integer[temp.size()];
+                    arr = temp.toArray(arr);
+                    return arr;
+                }
+            }else {
+                if (lon > center[0] && lat > center[1]) {
+                    //lon > center[0] is right side
+                    //lat > center[1] is on top side
+                    temp.add(loc + 1);
+                    temp.add(loc - (int)block);
+                    temp.add(loc + 1 - (int)block);
+                    Integer[] arr = new Integer[temp.size()];
+                    arr = temp.toArray(arr);
+                    return arr;
+
+                } else if (lon <= center[0] && lat > center[1]){
+                    //lon <= center[0] is left side
+                    //lat > center[1] is on top side
+                    temp.add(loc - 1);
+                    temp.add(loc - (int)block);
+                    temp.add(loc - 1 - (int)block);
+                    Integer[] arr = new Integer[temp.size()];
+                    arr = temp.toArray(arr);
+                    return arr;
+                } else if(lon <= center[0] && lat <= center[1]){
+                    //lon <= center[0] is left side
+                    //lat <= center[1] is on lower side
+                    temp.add(loc - 1);
+                    temp.add(loc + (int)block);
+                    temp.add(loc - 1 + (int)block);
+                    Integer[] arr = new Integer[temp.size()];
+                    arr = temp.toArray(arr);
+                    return arr;
+                } else{
+                    //lon > center[0] is right side
+                    //lat <= center[1] is on lower side
+                    temp.add(loc + 1);
+                    temp.add(loc + (int)block);
+                    temp.add(loc + 1 + (int)block);
+                    Integer[] arr = new Integer[temp.size()];
+                    arr = temp.toArray(arr);
+                    return arr;
+                }
+            }
+        }
+
+
+
+     */
+
+
+    private double[] getCenter (Integer row, Integer col, double size) {
+        double lonCenter = lonDif / size * ((double)col + 0.5) + MapServer.ROOT_ULLON;
+        double latCenter = latDif / size * ((double)row + 0.5) + MapServer.ROOT_ULLAT;
+        return (new double[] {lonCenter, latCenter});
+    }
+
+
 
 
 
